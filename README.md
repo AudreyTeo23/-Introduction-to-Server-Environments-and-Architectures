@@ -118,7 +118,5 @@ lsb_release -a
 ![Ubuntu Desktop](lab-1a/screenshots/04-ubuntu-desktop-booted.png)
 
 ```
- 
----
 
 
