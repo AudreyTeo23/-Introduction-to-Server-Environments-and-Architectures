@@ -21,7 +21,7 @@ Install Ubuntu 24.04.4 LTS as a virtual machine on a Windows 11 host using VMwar
  
 ---
  
-## 🖥️ Environment
+## Environment
  
 | Component | Details |
 |-----------|---------|
@@ -106,10 +106,8 @@ lsb_release -a
 ---
  
 screenshots/
-├── 01-vmware-new-vm.png
-├── 02-vm-settings.png
-├── 03-ubuntu-installer.png
-└── 04-ubuntu-desktop-booted.png
+**01 — VMware New VM Wizard (ISO selected & Ubuntu detected)**
+![VMware New VM Wizard](screenshots/01-vmware-new-vm.png)
 ```
  
 ---
