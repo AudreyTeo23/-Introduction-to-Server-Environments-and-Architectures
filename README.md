@@ -92,8 +92,8 @@ lsb_release -a
  
 - AMD64 ISO is correct for standard Windows 11 machines running Intel or AMD processors
 - VMware Workstation Pro auto-detects Ubuntu and pre-configures optimal settings (Easy Install)
-- Allocating 8 GB RAM ensures the Desktop GUI runs smoothly without lag
-- 60 GB disk provides enough headroom for all upcoming lab activities
+- Allocating 4 GB RAM ensures the Desktop GUI runs smoothly without lag
+- 30 GB disk provides enough headroom for all upcoming lab activities
  
 ---
  
@@ -105,7 +105,6 @@ lsb_release -a
  
 ---
  
-screenshots/
 **01 — VMware New VM Wizard (ISO selected & Ubuntu detected)**
 ![VMware New VM Wizard](screenshots/01-vmware-new-vm.png)
 ```
