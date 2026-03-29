@@ -102,20 +102,6 @@ lsb_release -a
  
 ---
  
-## Screenshots
-
-**01 — VMware New VM Wizard (ISO selected & Ubuntu detected)**
-![VMware New VM Wizard](lab-1a/screenshots/01-vmware-new-vm.png)
-<br><br>
-**02 — VM Settings Summary**
-![VM Settings](lab-1a/screenshots/02-vm-settings.png)
-<br><br>
-**03 — Ubuntu Boot Screen**
-![Ubuntu Installer](lab-1a/screenshots/03-ubuntu-installer.png)
-<br><br>
-**04 — Ubuntu Desktop Booted**
-![Ubuntu Desktop](lab-1a/screenshots/04-ubuntu-desktop-booted.png)
-<br><br>
 ---
 
 
