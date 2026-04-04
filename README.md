@@ -924,11 +924,6 @@ Tools such as figlet and neofetch can display system information, hostname, reso
 
 ---
 
-[Back to Main README](../README.md)
-
----
-
----
 
 # Lab 4 — Additional Server Services: MariaDB
 
