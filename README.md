@@ -785,7 +785,7 @@ DNS records are cached by resolvers around the world according to each record's 
 
 ---
 
-# Lab 3b — Bash Backup Scripting, Cron Jobs & Additional Server Services
+# Lab 3b — Bash Backup Scripting, Cron Jobs & Login Customisation
 
 **Module:** BRG-27 ISEA  
 **Day:** 3b  
@@ -795,7 +795,7 @@ DNS records are cached by resolvers around the world according to each record's 
 
 ## Objective
 
-Write a Bash script to automate file backups with date-stamped filenames, make the script available system-wide, schedule it using cron for hourly execution, and log all output to a file. The lab was then extended by installing and verifying MariaDB as an example of deploying additional server services on the same Ubuntu VM.
+Write a Bash script to automate file backups with date-stamped filenames, make the script available system-wide, schedule it using cron for hourly and boot-time execution, and log all output to a file. The lab was then extended by customising the server login experience using figlet and neofetch.
 
 ---
 
@@ -806,7 +806,6 @@ Write a Bash script to automate file backups with date-stamped filenames, make t
 | Cloud Platform | Microsoft Azure |
 | VM | my-vm — Ubuntu 24.04.4 LTS |
 | Shell | Bash |
-| Database | MariaDB 10.11.14 |
 | User | azureuser |
 
 ---
@@ -816,8 +815,8 @@ Write a Bash script to automate file backups with date-stamped filenames, make t
 - Write a Bash script using variables, date formatting, and file operations
 - Use cp, zip, and echo to automate backup and logging tasks
 - Grant execute permissions and move scripts to /usr/bin for system-wide access
-- Schedule automated tasks using cron
-- Install and verify a database server (MariaDB)
+- Schedule automated tasks using cron, including hourly and boot-time execution
+- Customise the login experience using figlet and neofetch
 
 ---
 
@@ -855,14 +854,25 @@ The root crontab was opened using `sudo crontab -e`. A new cron entry was added 
 
 ---
 
-## Part 5 — Install and Verify MariaDB
+## Challenge 1 — Boot-Time Script Execution
 
-MariaDB was installed as an example of deploying an additional server service. The package manager resolved and installed all 37 required packages automatically. After installation, the MariaDB service was started and a root login was performed to verify the database was operational. The SHOW DATABASES command returned the four default system databases — `information_schema`, `mysql`, `performance_schema`, and `sys` — confirming a clean and functional installation.
+The root crontab was updated to include an `@reboot` entry alongside the existing hourly job. This ensures the backup script runs automatically every time the server starts, without any manual intervention. The final crontab listing confirmed both entries were active.
 
-![MariaDB installation output](lab-3b/05-mariadb-install.png)
+![Crontab showing hourly and @reboot entries](lab-3b/08-crontab-reboot.png)
 
-![MariaDB shell — SHOW DATABASES output](lab-3b/06-mariadb-verify.png)
+---
 
+## Challenge 2 — Login Message Customisation with figlet and neofetch
+
+`figlet` and `neofetch` were installed from the Ubuntu package repository to customise the server login experience. figlet renders large ASCII-art banners from plain text, while neofetch displays a system summary including OS version, CPU, memory, and uptime alongside the Ubuntu logo.
+
+![figlet and neofetch installation output](lab-3b/13-figlet-install.png)
+
+![figlet and neofetch installation completed](lab-3b/14-figlet-install2.png)
+
+Both tools were run after installation to verify the output. figlet rendered a Welcome banner and neofetch displayed the full system summary for the Azure VM, confirming both tools were working correctly.
+
+![figlet Welcome banner and neofetch system summary](lab-3b/07-figlet-neofetch.png)
 
 ---
 
@@ -909,7 +919,124 @@ Tools such as figlet and neofetch can display system information, hostname, reso
 - Created a test directory structure with sample files to simulate a working backup target
 - Wrote a Bash script that generates a date-stamped ZIP archive and logs each run with a timestamp
 - Made the script executable and moved it to /usr/bin for system-wide availability
-- Scheduled the script to run hourly using a root crontab entry
-- Installed and verified MariaDB as an additional server service, confirming database connectivity via the MariaDB shell
+- Scheduled the script to run hourly and at boot using root crontab entries
+- Installed figlet and neofetch and verified login message customisation
 
 ---
+
+[Back to Main README](../README.md)
+
+---
+
+---
+
+# Lab 4 — Additional Server Services: MariaDB
+
+**Module:** BRG-27 ISEA  
+**Day:** 4  
+**Status:** Completed
+
+---
+
+## Objective
+
+Deploy MariaDB as an additional server service on the existing Ubuntu VM, verify the installation, and demonstrate practical database operations including creating a database and table, inserting records, and performing UPDATE and DELETE queries.
+
+---
+
+## Environment
+
+| Component | Details |
+|-----------|---------|
+| Cloud Platform | Microsoft Azure |
+| VM | my-vm — Ubuntu 24.04.4 LTS |
+| Database | MariaDB 10.11.14 |
+| User | azureuser |
+
+---
+
+## Learning Objectives
+
+- Install and enable MariaDB on an Ubuntu server
+- Connect to the MariaDB shell as root and verify the installation
+- Create a database and define a table with appropriate data types and constraints
+- Insert, query, update, and delete records using SQL
+
+---
+
+## Part 1 — Install and Verify MariaDB
+
+MariaDB was installed from the Ubuntu package repository. The package manager resolved and installed all required dependencies automatically. After installation, the MariaDB service was started and confirmed to be running.
+
+![MariaDB installation output](lab-3b/05-mariadb-install.png)
+
+![MariaDB installation completed](lab-3b/05-mariadb-install1.png)
+
+A root login was performed using `sudo mysql -u root` to confirm the database service was accessible and operational.
+
+![MariaDB root login confirmed](lab-3b/09-mariadb-login.png)
+
+The `SHOW DATABASES` command was run to confirm the default system databases were present, including the newly created `labdb`.
+
+![SHOW DATABASES output](lab-3b/11b-mariadb-showdb.png)
+
+The initial verification using the MariaDB shell confirmed a clean installation with all default system databases in place.
+
+![MariaDB shell — initial SHOW DATABASES output](lab-3b/06-mariadb-verify.png)
+
+---
+
+## Part 2 — Create Database and Table, Insert Records
+
+A test database named `labdb` was created and selected. A `students` table was defined with three columns — `id` as an integer primary key, `name` as a varchar, and `grade` as a two-character field. Two records were inserted and retrieved using a SELECT query to confirm the data was stored correctly.
+
+![Database and table created, records inserted and retrieved](lab-3b/10-mariadb-table.png)
+
+The table structure was inspected using the `DESCRIBE` command, confirming the column definitions, data types, and primary key constraint were applied as intended.
+
+![DESCRIBE students table output](lab-3b/11-mariadb-describe.png)
+
+---
+
+## Part 3 — Update and Delete Records
+
+An `UPDATE` statement was used to change Bob's grade from B to A+. A `DELETE` statement then removed Alice's record. A final `SELECT` confirmed that only Bob's updated record remained in the table, verifying both operations executed correctly.
+
+![UPDATE and DELETE operations with final SELECT result](lab-3b/12-mariadb-update-delete.png)
+
+---
+
+## Reflection Questions
+
+**What is the purpose of a primary key in a database table?**
+
+A primary key uniquely identifies each row in a table and prevents duplicate records from being inserted. It also serves as the reference point for UPDATE and DELETE operations, ensuring that changes target the correct record without ambiguity.
+
+**Why is MariaDB described as a drop-in replacement for MySQL?**
+
+MariaDB was forked from MySQL and maintains full compatibility with MySQL's SQL syntax, client libraries, and connection protocols. Applications written for MySQL can connect to MariaDB without modification, making it straightforward to substitute one for the other in existing deployments.
+
+**What is the risk of running MariaDB without securing the installation?**
+
+A default MariaDB installation includes anonymous user accounts and a test database that are accessible without authentication. Without running `mysql_secure_installation`, these accounts could be exploited by local users or applications to access or modify data without authorisation.
+
+---
+
+## Issues Encountered
+
+| Issue | Resolution |
+|-------|------------|
+| None | Installation and all SQL operations completed without error |
+
+---
+
+## Outcome
+
+- Installed MariaDB and confirmed the service was running on the Ubuntu VM
+- Connected to the MariaDB shell as root and verified the default databases
+- Created a database and a structured table with a primary key constraint
+- Inserted, queried, updated, and deleted records to demonstrate full CRUD functionality
+
+---
+
+[Back to Main README](../README.md)
