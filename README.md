@@ -289,4 +289,112 @@ Using `127.0.0.1` as a loopback to simulate a partner was a practical way to tes
 
 ---
 
+# Lab 2a — Total Cost of Ownership (TCO) Analysis
+
+**Module:** BRG-27 ISEA  
+**Day:** 2a  
+**Status:** Completed
+
+---
+
+## Objective
+
+Apply TCO methodology to a real-world procurement decision by comparing two printer models over a five-year period. The exercise required gathering manufacturer specifications, defining usage assumptions, calculating fixed and variable costs using a spreadsheet, and interpreting the results to make a justified recommendation.
+
+---
+
+## Environment
+
+| Component | Details |
+|-----------|---------|
+| Tool | Microsoft Excel |
+| Comparison Period | 5 Years |
+| Printer A | Canon PIXMA G3020 (Ink Tank, Wireless, Print/Scan/Copy) |
+| Printer B | HP LaserJet Pro M404n (Mono Laser, Network, Print Only) |
+| Currency | SGD |
+
+---
+
+## Learning Objectives
+
+- Define TCO and distinguish between fixed and variable costs
+- Use spreadsheet formulas to calculate and compare total costs across printer types
+- Define and document assumptions clearly and consistently
+- Evaluate procurement decisions based on calculated TCO data
+- Compare cost models for different usage scenarios
+
+---
+
+## Assumptions & Methodology
+
+All costs were calculated using the assumptions below. Pricing was sourced from manufacturer spec sheets, Officeworks, and SP Group electricity rates.
+
+
+![TCO Assumptions and Methodology](lab-2a/01-TOC1.png)
+
+---
+
+## TCO Spreadsheet — 5-Year Cost Comparison
+
+The spreadsheet below documents every cost line item for both printers, using formulas to derive totals from the assumptions above.
+
+![TCO Spreadsheet — Full Comparison](lab-2a/02-TOCO2.png)
+
+---
+
+## How Costs Were Calculated
+
+The table below summarises the calculation method for each cost component side by side.
+
+![Cost Calculation Breakdown](lab-2a/02-Cost3.png)
+
+### Summary of Results
+
+| Printer | 5-Year TCO |
+|---------|-----------|
+| Canon PIXMA G3020 | SGD $3,578.30 |
+| HP LaserJet Pro M404n | SGD $9,217.00 |
+| **Canon saves** | **SGD $5,638.70** |
+
+The Canon PIXMA G3020 is significantly cheaper over five years. Its ink tank system costs a fraction of laser toner, and its 11W active power draw versus 380W for the HP means electricity costs are negligible by comparison. Even with contingency replacement units budgeted for both printers, Canon remains the more cost-effective choice. The HP M404n offers faster speeds (38 ppm vs 9 ipm) and suits mono-only, high-speed office environments where print speed and network reliability outweigh running costs.
+
+---
+
+## Reflection Questions
+
+![Reflection Questions](lab-2a/02-Reflection-Question4.png)
+
+**Q1: Based on the TCO, which printer is the most cost-effective over 5 years?**
+
+The Canon PIXMA G3020 is significantly cheaper. Its ink tank system costs a fraction of laser toner, and its 11W power draw versus 380W for the HP means electricity costs are negligible by comparison. Even with contingency replacement units included, Canon remains the more cost-effective choice.
+
+**Q2: Would the answer change for a home user who prints only 5 pages per week?**
+
+Yes. At 5 pages per week over 5 years, the total page count drops to 1,300 pages. The Canon ink bottles would last years without replacement. However, ink can dry up from inactivity — for very low usage a laser printer may actually be more practical despite a higher cost per page.
+
+**Q3: What other non-financial factors could influence printer selection?**
+
+Print speed (38 ppm HP vs 9 ipm Canon), mono versus colour capability, network connectivity, physical footprint, noise level, duty cycle, and ease of consumable replacement.
+
+**Q4: What cost components are more significant for a large workgroup printer?**
+
+For high-volume workgroups, toner or ink cost per page, drum replacement cycles, paper input capacity, duty cycle limits, and maintenance contracts become the dominant cost drivers.
+
+**Q5: At what point (in years/pages) do the two printer options break even in cost?**
+
+At 750 pages per week the HP never breaks even against the Canon — Canon is cheaper from day one. HP would only be competitive at very low print volumes where ink tank printers risk ink drying, or in environments requiring mono-only high-speed output where speed justifies the cost premium.
+
+---
+
+## Outcome
+
+- Defined and applied TCO methodology to a real procurement scenario
+- Documented all assumptions with sources and calculation basis
+- Built a structured spreadsheet comparing fixed and variable costs across two printer models
+- Calculated a 5-year TCO showing Canon at SGD $3,578.30 versus HP at SGD $9,217.00
+- Identified break-even conditions and non-financial factors affecting the decision
+- Produced a justified recommendation based on quantitative analysis
+
+---
+
 [Back to Main README](../README.md)
