@@ -362,7 +362,7 @@ The Canon PIXMA G3020 is significantly cheaper over five years. Its ink tank sys
 
 ## Reflection Questions
 
-![Reflection Questions](lab-2a/02-Reflection-Question4.png)
+![Reflection Questions](lab-2a/02-Reflection Question4.png)
 
 **Q1: Based on the TCO, which printer is the most cost-effective over 5 years?**
 
