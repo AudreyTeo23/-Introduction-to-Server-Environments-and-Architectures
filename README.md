@@ -1,121 +1,35 @@
-## BRG-27 Lab Activities - Introduction to Server Environments and Architectures
-Student: Teo Qing Ya Audrey
-<br>
-Kaplan ID: CT0384570
-<br>
-Murdoch ID: 36060198
-<br>
-#
+# BRG-27 — Infrastructure Systems Engineering Activity (ISEA)
 
-# Lab 1a — Setting Up Linux
- 
-**Module:** BRG-27 ISEA - **Day:** 1a
-<br>
- 
-## Objective
- 
-Install Ubuntu 24.04.4 LTS as a virtual machine on a Windows 11 host using VMware Workstation Pro, and successfully boot into the Ubuntu Desktop environment.
- 
+**Student:** Teo Qing Ya Audrey  
+**Kaplan ID:** CT0384570  
+**Murdoch ID:** 36060198  
+**Module:** BRG-27 Introduction to Server Environments and Architectures  
+**Host OS:** Windows 11 Pro  
+**Linux Environment:** Ubuntu 24.04.4 LTS via WSL 2
+
 ---
- 
+
+## About This Repository
+
+This repository documents my hands-on lab work for the BRG-27 Infrastructure Systems Engineering Activity module at Murdoch University. Each folder corresponds to a lab session covering a core area of Linux administration, cloud infrastructure, and server management.
+
+The labs progress from foundational Linux skills — setting up the environment, navigating the file system, managing services and permissions — through to real-world infrastructure topics such as cloud provisioning on AWS, DNS configuration, SSL certificates, and shell scripting automation.
+
+All Linux lab work was performed on Ubuntu 24.04.4 LTS running natively on Windows 11 via WSL 2. Cloud labs were performed on Amazon Web Services (AWS) using the free tier. Each lab folder contains a written walkthrough of the steps taken, commands used, observations made, and reflections on what was learned. Screenshots are included as evidence of hands-on completion.
+
+This repository also serves as preparation for the final video demonstration, where all lab work and key technical concepts will be presented and explained.
+
+---
+
 ## Environment
- 
+
 | Component | Details |
 |-----------|---------|
 | Host OS | Windows 11 Pro |
-| Hypervisor | VMware Workstation Pro (25H2) |
-| ISO Used | `ubuntu-24.04.4-desktop-amd64.iso` |
-| Architecture | x86_64 (AMD64) |
-| VM Name | Ubuntu 64-bit |
-| VM vCPU | 2 cores |
-| VM RAM | 4 GB |
-| VM Storage | 30 GB (SCSI) |
-| Network | NAT |
- 
+| Linux Method | Windows Subsystem for Linux (WSL 2) |
+| Distribution | Ubuntu 24.04.4 LTS (Noble Numbat) |
+| Kernel | 6.6.87.2-microsoft-standard-WSL2 |
+| Architecture | x86_64 |
+
 ---
- 
-## Steps Taken
- 
-### 1. Download Ubuntu ISO
-- Downloaded `ubuntu-24.04.4-desktop-amd64.iso` from the [official Ubuntu website](https://ubuntu.com/download/desktop)
-- Verified it is the **AMD64** release — correct for Intel/AMD processors on Windows hosts
- 
-### 2. Create New Virtual Machine in VMware Workstation Pro
-- Opened VMware Workstation Pro → **File → New Virtual Machine**
-- Selected **Typical (recommended)** configuration
-- Pointed installer to the downloaded Ubuntu ISO
-- VMware auto-detected the OS as Ubuntu 64-bit
- 
-### 3. Configure VM Resources
- 
-| Setting | Value |
-|---------|-------|
-| Processors | 2 vCPUs |
-| Memory | 4096 MB (4 GB) |
-| Hard Disk | 30 GB (SCSI) |
-| Network Adapter | NAT |
- 
-### 4. Install Ubuntu
-- Powered on the VM — booted directly from the ISO
-- Followed the Ubuntu guided installer:
-  - Selected language, keyboard layout, and timezone
-  - Chose **Normal installation**
-  - Selected **Erase disk and install Ubuntu** (applies inside VM only)
-  - Created user account and set password
-- Installation completed and VM rebooted into Ubuntu Desktop
- 
-### 5. Post-Installation
-- Logged into Ubuntu Desktop successfully
-- Opened **Terminal** and confirmed system info:
- 
-```bash
-uname -a
-# Linux ubuntu 6.8.0-xx-generic #xx-Ubuntu SMP x86_64 GNU/Linux
- 
-lsb_release -a
-# Ubuntu 24.04.4 LTS
-```
- 
----
- 
-## Outcome
- 
-- Ubuntu 24.04.4 LTS Desktop successfully installed and running inside VMware Workstation Pro on Windows 11 Pro
-- VM is accessible, stable, and ready for subsequent labs
- 
----
- 
-## Observations & Learnings
- 
-- AMD64 ISO is correct for standard Windows 11 machines running Intel or AMD processors
-- VMware Workstation Pro auto-detects Ubuntu and pre-configures optimal settings (Easy Install)
-- Allocating 4 GB RAM ensures the Desktop GUI runs smoothly without lag
-- 30 GB disk provides enough headroom for all upcoming lab activities
- 
----
- 
-## Issues Encountered
- 
-| Issue | Resolution |
-|-------|------------|
-| None | Installation completed without errors |
-
-## Screenshots
-
-**01 — VMware New VM Wizard (ISO selected & Ubuntu detected)**
-![VMware New VM Wizard](lab-1a/screenshots/01-vmware-new-vm.png)
-
-**02 — VM Settings Summary**
-![VM Settings](lab-1a/screenshots/02-vm-settings.png)
-
-**03 — Ubuntu Boot Screen**
-![Ubuntu Installer](lab-1a/screenshots/03-ubuntu-installer.png)
-
-**04 — Ubuntu Desktop Booted**
-![Ubuntu Desktop](lab-1a/screenshots/04-ubuntu-desktop-booted.png)
- 
----
- 
-
-# Lab 2a — Total Cost of Ownership (TCO)
 
