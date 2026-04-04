@@ -364,26 +364,6 @@ The Canon PIXMA G3020 is significantly cheaper over five years. Its ink tank sys
 
 ![Reflection Questions](lab-2a/02-Reflection%20Question4.png)
 
-**Q1: Based on the TCO, which printer is the most cost-effective over 5 years?**
-
-The Canon PIXMA G3020 is significantly cheaper. Its ink tank system costs a fraction of laser toner, and its 11W power draw versus 380W for the HP means electricity costs are negligible by comparison. Even with contingency replacement units included, Canon remains the more cost-effective choice.
-
-**Q2: Would the answer change for a home user who prints only 5 pages per week?**
-
-Yes. At 5 pages per week over 5 years, the total page count drops to 1,300 pages. The Canon ink bottles would last years without replacement. However, ink can dry up from inactivity — for very low usage a laser printer may actually be more practical despite a higher cost per page.
-
-**Q3: What other non-financial factors could influence printer selection?**
-
-Print speed (38 ppm HP vs 9 ipm Canon), mono versus colour capability, network connectivity, physical footprint, noise level, duty cycle, and ease of consumable replacement.
-
-**Q4: What cost components are more significant for a large workgroup printer?**
-
-For high-volume workgroups, toner or ink cost per page, drum replacement cycles, paper input capacity, duty cycle limits, and maintenance contracts become the dominant cost drivers.
-
-**Q5: At what point (in years/pages) do the two printer options break even in cost?**
-
-At 750 pages per week the HP never breaks even against the Canon — Canon is cheaper from day one. HP would only be competitive at very low print volumes where ink tank printers risk ink drying, or in environments requiring mono-only high-speed output where speed justifies the cost premium.
-
 ---
 
 ## Outcome
@@ -397,4 +377,3 @@ At 750 pages per week the HP never breaks even against the Canon — Canon is ch
 
 ---
 
-[Back to Main README](../README.md)
