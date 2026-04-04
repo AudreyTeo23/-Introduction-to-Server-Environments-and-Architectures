@@ -13,7 +13,7 @@
 
 This repository documents my hands-on lab work for the BRG-27 Infrastructure Systems Engineering Activity module at Murdoch University. Each folder corresponds to a lab session covering a core area of Linux administration, cloud infrastructure, and server management.
 
-The labs progress from foundational Linux skills — setting up the environment, navigating the file system, managing services and permissions — through to real-world infrastructure topics such as cloud provisioning on AWS, DNS configuration, SSL certificates, and shell scripting automation.
+The labs progress from foundational Linux skills setting up the environment, navigating the file system, managing services and permissions through to real-world infrastructure topics such as cloud provisioning on AWS, DNS configuration, SSL certificates, and shell scripting automation.
 
 All Linux lab work was performed on Ubuntu 24.04.4 LTS running natively on Windows 11 via WSL 2. Cloud labs were performed on Amazon Web Services (AWS) using the free tier. Each lab folder contains a written walkthrough of the steps taken, commands used, observations made, and reflections on what was learned. Screenshots are included as evidence of hands-on completion.
 
@@ -117,7 +117,7 @@ Practised creating, copying, and viewing files. Checked system information using
 
 ## Part 6 — Super User & Permissions
 
-Demonstrated privilege escalation with `whoami` and `sudo whoami`. Attempted `adduser` without sudo — it failed. With sudo it succeeded.
+Demonstrated privilege escalation with `whoami` and `sudo whoami`. Attempted `adduser` without sudo it failed. With sudo it succeeded.
 
 ![sudo whoami](lab-1b/06-sudo-whoami.png)
 
@@ -137,7 +137,7 @@ Installed Apache using `sudo apt install apache2` and visited `http://127.0.0.1`
 
 ## Part 8 — Edit index.html and Share with Partner
 
-Edited `/var/www/html/index.html` using nano to replace the default Apache page with a custom page — "Peer Page, Modified by Audrey Teo". Verified the content with `cat` then visited `http://127.0.0.1` in the browser to confirm the change was live.
+Edited `/var/www/html/index.html` using nano to replace the default Apache page with a custom page "Peer Page, Modified by Audrey Teo". Verified the content with `cat` then visited `http://127.0.0.1` in the browser to confirm the change was live.
 
 ![Editing index.html in nano](lab-1b/09-edit-indexhtml.png)
 
@@ -149,7 +149,7 @@ Edited `/var/www/html/index.html` using nano to replace the default Apache page 
 
 ## Part 9 — Scan Ports with Nmap and Remove Apache
 
-Ran `nmap 127.0.0.1` to scan open ports — both port 22 (SSH) and port 80 (HTTP) showed as open with Apache running. Removed Apache and reran Nmap — port 80 disappeared, confirming that removing a service directly closes its port.
+Ran `nmap 127.0.0.1` to scan open ports — both port 22 (SSH) and port 80 (HTTP) showed as open with Apache running. Removed Apache and reran Nmap port 80 disappeared, confirming that removing a service directly closes its port.
 
 ![Nmap scan with Apache running](lab-1b/07-nmap.png)
 
@@ -159,7 +159,7 @@ Ran `nmap 127.0.0.1` to scan open ports — both port 22 (SSH) and port 80 (HTTP
 
 ## Part 10 — Enable UFW and Observe Service Access
 
-Enabled UFW and allowed port 80. Observed that blocking port 80 via UFW prevented web access even with Apache running — showing the firewall and the service are independent security layers.
+Enabled UFW and allowed port 80. Observed that blocking port 80 via UFW prevented web access even with Apache running showing the firewall and the service are independent security layers.
 
 ```bash
 sudo ufw enable
@@ -245,7 +245,7 @@ SSH'd into `audrey_test` and created `remote_task.txt` remotely, confirming SSH 
 
 ### Challenge 2 — Remote GUI Apps via SSH
 
-Attempted to launch `gedit` over SSH — it failed because `gedit` requires a display server. SSH provides terminal access only.
+Attempted to launch `gedit` over SSH it failed because `gedit` requires a display server. SSH provides terminal access only.
 
 ### Challenge 3 & 4 — SCP File Transfer
 
@@ -267,7 +267,7 @@ scp -r books/ audrey_test@127.0.0.1:~/
 | Issue | Resolution |
 |-------|------------|
 | `bzip2` not installed | Ran `sudo apt install bzip2 -y` |
-| `gedit` failed over SSH | Expected — GUI apps require `ssh -X` for display forwarding |
+| `gedit` failed over SSH | Expected GUI apps require `ssh -X` for display forwarding |
 
 ---
 
@@ -275,7 +275,7 @@ scp -r books/ audrey_test@127.0.0.1:~/
 
 - Navigated the Linux file system using `pwd`, `ls`, `cd`, `mkdir`, and `touch`
 - Installed and tested Apache web server, edited `index.html` using nano
-- Scanned open ports using Nmap before and after removing Apache — confirmed port 80 disappeared
+- Scanned open ports using Nmap before and after removing Apache confirmed port 80 disappeared
 - Configured UFW firewall rules and observed independent control over service accessibility
 - Created a new user and SSH'd between accounts using the loopback address
 - Downloaded files with `wget`, compressed with `tar` and `bzip2`, transferred with `scp`
@@ -285,7 +285,7 @@ scp -r books/ audrey_test@127.0.0.1:~/
 
 ## Reflection
 
-Using `127.0.0.1` as a loopback to simulate a partner was a practical way to test SSH and SCP without needing a second machine. The Nmap exercise clearly showed that removing a service closes its port — a running service and a firewall rule are two independent controls. The gedit failure over SSH was a good reminder that servers are headless by default and all administration must be done through the terminal.
+Using `127.0.0.1` as a loopback to simulate a partner was a practical way to test SSH and SCP without needing a second machine. The Nmap exercise clearly showed that removing a service closes its port a running service and a firewall rule are two independent controls. The gedit failure over SSH was a good reminder that servers are headless by default and all administration must be done through the terminal.
 
 ---
 
@@ -387,7 +387,7 @@ The Canon PIXMA G3020 is significantly cheaper over five years. Its ink tank sys
 
 ## Objective
 
-Launch and configure a cloud virtual machine on Microsoft Azure, install and serve content using Apache2, and demonstrate file management, network access, and remote connectivity. The lab was then extended with Bash scripting — writing and executing shell scripts for system information, loops, conditionals, and automated resource monitoring.
+Launch and configure a cloud virtual machine on Microsoft Azure, install and serve content using Apache2, and demonstrate file management, network access, and remote connectivity. The lab was then extended with Bash scripting writing and executing shell scripts for system information, loops, conditionals, and automated resource monitoring.
 
 ---
 
@@ -476,7 +476,7 @@ The default Apache web page was opened in the nano text editor directly on the s
 
 ## Part 7 — Replace index.html with Custom Page and Add Hyperlinks
 
-The entire default Apache page was replaced with a clean custom HTML page. The new page included a heading, a descriptive paragraph, and a list of anchor tags linking to external resources — demonstrating the use of HTML hyperlinks served from a live cloud web server. The file was written directly to disk using a heredoc approach to avoid paste limitations encountered in the terminal session.
+The entire default Apache page was replaced with a clean custom HTML page. The new page included a heading, a descriptive paragraph, and a list of anchor tags linking to external resources demonstrating the use of HTML hyperlinks served from a live cloud web server. The file was written directly to disk using a heredoc approach to avoid paste limitations encountered in the terminal session.
 
 ![Custom page with hyperlinks in browser](lab-2a/08-hyperlinks-browser.png)
 
@@ -500,7 +500,7 @@ The web server was accessed from a mobile phone browser using the same public IP
 
 ## Part 10 — Network Latency Testing with ping
 
-The ping command was used to measure network latency from the VM to servers in three different geographic regions. All responses returned under 4ms, which reflects Google's globally distributed infrastructure — requests are automatically routed to the nearest available node regardless of the domain suffix used.
+The ping command was used to measure network latency from the VM to servers in three different geographic regions. All responses returned under 4ms, which reflects Google's globally distributed infrastructure requests are automatically routed to the nearest available node regardless of the domain suffix used.
 
 | Target | Average Latency |
 |--------|----------------|
@@ -514,7 +514,7 @@ The ping command was used to measure network latency from the VM to servers in t
 
 ## Part 11 — File Transfer Using SCP
 
-A file was securely transferred from the local Windows machine to the Azure VM using SCP with the private key for authentication. This demonstrated an alternative method of getting files onto a remote server — pushing directly from the local machine rather than pulling from a remote URL.
+A file was securely transferred from the local Windows machine to the Azure VM using SCP with the private key for authentication. This demonstrated an alternative method of getting files onto a remote server pushing directly from the local machine rather than pulling from a remote URL.
 
 ![SCP file transfer output](lab-2a/12-scp-transfer.png)
 
@@ -522,7 +522,7 @@ A file was securely transferred from the local Windows machine to the Azure VM u
 
 ## Part 12 — Set File Permissions Using chmod
 
-Restrictive permissions were applied to the private key file using chmod 600, ensuring only the file owner can read or write it. The result was confirmed using ls -la, which returned `-rw-------` — the standard required permission level for SSH private keys. If a key file has broader permissions, SSH will refuse to use it as a security measure.
+Restrictive permissions were applied to the private key file using chmod 600, ensuring only the file owner can read or write it. The result was confirmed using ls -la, which returned `-rw-------` the standard required permission level for SSH private keys. If a key file has broader permissions, SSH will refuse to use it as a security measure.
 
 ![chmod 600 and ls -la output](lab-2a/13-chmod.png)
 
@@ -532,7 +532,7 @@ Restrictive permissions were applied to the private key file using chmod 600, en
 
 ### Directory Creation and Navigation
 
-A working directory structure was created for the Bash scripting exercises. A main lab directory was created, then two subdirectories — one for scripts and one for documentation — were created inside it. The ls command was used to confirm the structure was in place.
+A working directory structure was created for the Bash scripting exercises. A main lab directory was created, then two subdirectories one for scripts and one for documentation were created inside it. The ls command was used to confirm the structure was in place.
 
 ![mkdir and directory navigation](lab-2a/14-mkdir-navigate.png)
 
@@ -554,7 +554,7 @@ A basic shell script was written and saved using nano. It opened with the sheban
 
 ## Part 15 — Bash Script: system_info.sh
 
-A more structured script was written incorporating a for loop to produce a countdown from three to one, the read command to accept interactive input from the user, and an if/elif/else conditional block to evaluate what was typed and return an appropriate response. When run with the name "Audrey", the script completed the countdown and returned a personalised greeting — confirming the loop and conditional logic both functioned as expected.
+A more structured script was written, incorporating a for loop to produce a countdown from three to one, the read command to accept interactive input from the user, and an if/elif/else conditional block to evaluate what was typed and return an appropriate response. When run with the name "Audrey", the script completed the countdown and returned a personalized greeting confirming that the loop and conditional logic both functioned as expected.
 
 ![system_info.sh execution output](lab-2a/16-system-info-run.png)
 
@@ -562,7 +562,7 @@ A more structured script was written incorporating a for loop to produce a count
 
 ## Part 16 — Bash Script: resource_monitor.sh
 
-A resource monitoring script was written that first asks the user how many monitoring cycles to run, then loops through each cycle — displaying memory usage, disk usage, and CPU load at each iteration with a two-second pause between checks. Running the script with two iterations showed memory at 419Mi used of 846Mi total, disk at 8% used, and CPU idle above 88%, confirming the server was running well within its resource limits.
+A resource monitoring script was written that first asks the user how many monitoring cycles to run, then loops through each cycle, displaying memory usage, disk usage, and CPU load at each iteration with a two-second pause between checks. Running the script with two iterations showed memory at 419Mi used of 846Mi total, disk at 8% used, and CPU idle above 88%, confirming the server was running well within its resource limits.
 
 ![resource_monitor.sh execution output](lab-2a/17-resource-monitor-run.png)
 
@@ -576,11 +576,11 @@ Cloud deployment removes the need for dedicated local hardware. The VM was provi
 
 **How does Apache serve files, and how did you verify this?**
 
-Apache listens on port 80 for incoming HTTP requests and serves files from the `/var/www/html/` directory. Verification was done by accessing the VM's public IP in a browser and confirming the correct page loaded — both the default page and the modified custom page — reflecting changes made directly to the files on the server.
+Apache listens on port 80 for incoming HTTP requests and serves files from the `/var/www/html/` directory. Verification was done by accessing the VM's public IP in a browser and confirming that the correct page loaded, both the default page and the modified custom page, reflecting changes made directly to the files on the server.
 
 **What did you learn about file ownership and permissions?**
 
-The chmod command controls who can read, write, or execute a file. Setting a file to 600 restricts access to the owner only. This is the required permission for SSH private keys — if the key file is readable by other users, SSH will reject it as a security risk.
+The chmod command controls who can read, write, or execute a file. Setting a file to 600 restricts access to the owner only. This is the required permission for SSH private keys; if the key file is readable by other users, SSH will reject it as a security risk.
 
 **What risks are associated with leaving instances running?**
 
@@ -588,15 +588,15 @@ A running VM continues to accumulate compute charges even when no work is being 
 
 **How would you explain the difference between DNS and /etc/hosts to a client?**
 
-DNS is a globally distributed system that resolves domain names to IP addresses across the internet. The /etc/hosts file is a local override on each individual machine — entries in it take precedence over DNS for that machine only. It is commonly used in development or testing environments to point a domain name to a local or staging server without modifying public DNS records.
+DNS is a globally distributed system that resolves domain names to IP addresses across the internet. The /etc/hosts file is a local override; its entries take precedence over DNS on that machine only. It is commonly used in development or testing environments to point a domain name to a local or staging server without modifying public DNS records.
 
 **What is the purpose of the shebang line in a Bash script?**
 
-The shebang line at the top of a script tells the operating system which interpreter to use when the script is executed directly. Without it, the system may not know which shell to invoke and the script may not run as intended.
+The shebang line at the top of a script tells the operating system which interpreter to use when the script is executed directly. Without it, the system may not know which shell to invoke, and the script may not run as intended.
 
 **What does the free command show?**
 
-It displays current memory usage in a human-readable format, including total RAM, amount in use, amount free, shared memory, buffer and cache usage, and the amount available for new processes. On this VM it showed 846Mi total RAM with 419Mi in use.
+It displays current memory usage in a human-readable format, including total RAM, amount in use, amount free, shared memory, buffer, and cache usage, and the amount available for new processes. On this VM, it showed 846Mi total RAM with 419Mi in use.
 
 **How would you monitor network bandwidth in a Bash script?**
 
@@ -608,8 +608,8 @@ By reading from the /proc/net/dev file, which contains cumulative bytes transmit
 
 | Issue | Resolution |
 |-------|------------|
-| SSH private key not saved at VM creation | Reset via Azure portal — generated and downloaded a new key pair |
-| PowerShell did not recognise the SSH command | Switched to Windows Command Prompt, which has native SSH support built in |
+| SSH private key not saved at VM creation | Reset via Azure portal generated and downloaded a new key pair |
+| PowerShell did not recognize the SSH command | Switched to Windows Command Prompt, which has native SSH support built in |
 | Paste disabled in CMD after SSH connection | Switched to Windows Terminal, which supports Ctrl+Shift+V paste consistently |
 | Commands merged into one line when pasting | Ran commands individually and used heredoc syntax for multi-line file creation |
 
