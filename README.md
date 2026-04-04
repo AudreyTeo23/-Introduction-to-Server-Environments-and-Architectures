@@ -161,11 +161,6 @@ Ran `nmap 127.0.0.1` to scan open ports — both port 22 (SSH) and port 80 (HTTP
 
 Enabled UFW and allowed port 80. Observed that blocking port 80 via UFW prevented web access, even with Apache running, showing that the firewall and the service are independent security layers.
 
-```bash
-sudo ufw enable
-sudo ufw allow 80
-sudo ufw status
-```
 
 ![UFW status](lab-1b/08-ufw-status.png)
 
@@ -175,10 +170,6 @@ sudo ufw status
 
 Attempted SSH into the partner machine using the loopback address. Troubleshot connectivity issues by checking UFW rules and ensuring OpenSSH was allowed through the firewall.
 
-```bash
-sudo ufw allow OpenSSH
-ssh audrey_test@127.0.0.1
-```
 
 ![SSH login](lab-1b/SH%20login.png)
 
@@ -198,10 +189,6 @@ Created a new user `audrey_test` using `sudo adduser` and SSH'd into the machine
 
 Downloaded books from Project Gutenberg using `wget` to practice retrieving files from the internet via the command line.
 
-```bash
-wget https://www.gutenberg.org/cache/epub/11/pg11.txt
-```
-
 ![wget download](lab-1b/13-wget.png)
 
 ---
@@ -210,12 +197,6 @@ wget https://www.gutenberg.org/cache/epub/11/pg11.txt
 
 Created a `books/` directory, moved downloaded files into it, and created a tar archive.
 
-```bash
-mkdir books
-mv pg11.txt books/
-tar -cvf books.tar books
-```
-
 ![mkdir and tar](lab-1b/14-mkdir-tar.png)
 
 ---
@@ -223,13 +204,6 @@ tar -cvf books.tar books
 ## Part 15 — Compress, Decompress, and Extract
 
 Compressed the tar archive using `bzip2`, then decompressed and extracted it to verify the contents were intact.
-
-```bash
-bzip2 books.tar
-ls -lh books.tar.bz2
-bunzip2 books.tar.bz2
-tar -xvf books.tar
-```
 
 ![wget and bzip2 compression](lab-1b/wget%20bzip2.png)
 
@@ -250,11 +224,6 @@ Attempted to launch `gedit` over SSH, but it failed because `gedit` requires a d
 ### Challenge 3 & 4 — SCP File Transfer
 
 Used SCP to transfer a single file and recursively copy the entire `books/` directory to the partner machine.
-
-```bash
-scp hello.txt audrey_test@127.0.0.1:~/
-scp -r books/ audrey_test@127.0.0.1:~/
-```
 
 ![gedit fail and SCP](lab-1b/12-gedit-scp.png)
 
