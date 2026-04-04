@@ -631,7 +631,7 @@ Configure a publicly accessible domain name using DuckDNS, verify DNS propagatio
 - Verify DNS resolution using nslookup and dig from a Linux terminal
 - Install and run Certbot to obtain and deploy a TLS certificate automatically
 - Open port 443 in the Azure Network Security Group to allow HTTPS traffic
-- Verify a secured HTTPS connection in a browser and understand certificate metadata
+- Verify a secure HTTPS connection in a browser and understand certificate metadata
 
 ---
 
@@ -645,7 +645,7 @@ A free subdomain was registered at DuckDNS using a GitHub account. The domain `x
 
 ## Part 2 — Verify DNS Propagation
 
-DNS resolution was tested from inside the Azure VM using both `nslookup` and `dig`. Both tools confirmed that `xiaoxuee.duckdns.org` resolved correctly to `98.70.33.154`. The dig output additionally showed a TTL of 46 seconds, status NOERROR, and query time of 0 milliseconds — indicating the record was already cached by the local resolver.
+DNS resolution was tested from inside the Azure VM using both `nslookup` and `dig`. Both tools confirmed that `xiaoxuee.duckdns.org` resolved correctly to `98.70.33.154`. The dig output also showed a TTL of 46 seconds, status NOERROR, and a query time of 0 milliseconds — indicating that the record was already cached by the local resolver.
 
 ![nslookup and dig DNS verification](lab-3a/02-dns-lookup.png)
 
@@ -653,7 +653,7 @@ DNS resolution was tested from inside the Azure VM using both `nslookup` and `di
 
 ## Part 3 — Access Server via Domain Name in Browser
 
-The domain name was entered into a browser to confirm that HTTP traffic was being routed correctly through DNS to the Apache web server. The custom page loaded successfully, displaying the expected content. The browser showed "Not secure" at this stage, as HTTPS had not yet been configured.
+The domain name was entered into a browser to confirm that HTTP traffic was being routed correctly through DNS to the Apache web server. The custom page loaded successfully and displayed the expected content. The browser displayed "Not secure" at this stage because HTTPS had not yet been configured.
 
 ![Custom page loading via domain name over HTTP](lab-3a/03-dns-browser.png)
 
@@ -661,7 +661,7 @@ The domain name was entered into a browser to confirm that HTTP traffic was bein
 
 ## Part 4 — Install Certbot
 
-Certbot and the Apache plugin were installed from the Ubuntu package repository. All dependencies were resolved and installed automatically, including the ACME client libraries required for Let's Encrypt certificate issuance.
+Certbot and the Apache plugin were installed from the Ubuntu package repository. All dependencies were automatically resolved and installed, including the ACME client libraries required for Let's Encrypt certificate issuance.
 
 ![Certbot installation output](lab-3a/04-certbot-install.png)
 
@@ -677,7 +677,7 @@ On the first run of Certbot, only the subdomain portion `xiaoxuee` was entered i
 
 ## Part 6 — Successful Certificate Issuance
 
-Certbot was run again with the full domain name `xiaoxuee.duckdns.org`. The certificate was successfully issued by Let's Encrypt and automatically deployed to the Apache configuration. The certificate was saved to `/etc/letsencrypt/live/xiaoxuee.duckdns.org/` and is valid until 3 July 2026. Certbot also configured automatic renewal via a scheduled background task.
+Certbot was run again with the full domain name `xiaoxuee.duckdns.org`. The certificate was successfully issued by Let's Encrypt and automatically deployed to Apache. The certificate was saved to `/etc/letsencrypt/live/xiaoxuee.duckdns.org/` and is valid until 3 July 2026. Certbot also configured automatic renewal via a scheduled background task.
 
 ![Certbot successful certificate issuance](lab-3a/06-certbot-success.png)
 
@@ -721,15 +721,15 @@ The certificate is valid for 90 days, expiring on 3 July 2026. Certbot automatic
 
 **What happens if a certificate expires and is not renewed?**
 
-Browsers will display a full-page warning blocking access to the site, stating that the connection is not private or that the certificate has expired. Most users will not proceed past this warning, effectively taking the site offline from a practical standpoint. APIs and automated clients may also refuse connections with expired certificates.
+Browsers will display a full-page warning blocking access to the site, stating that the connection is not private or that the certificate has expired. Most users will not proceed past this warning, effectively taking the site offline in practice. APIs and automated clients may also refuse connections with expired certificates.
 
 **Why does Let's Encrypt require port 80 or 443 to be open for verification?**
 
-Let's Encrypt uses the ACME protocol to verify that the requester controls the domain they are requesting a certificate for. The HTTP-01 challenge method requires port 80 to be accessible so that Let's Encrypt's servers can retrieve a verification token placed on the web server. Without this, the certificate authority has no way to confirm domain ownership and will refuse to issue a certificate.
+Let's Encrypt uses the ACME protocol to verify that the requester controls the domain for which they are requesting a certificate. The HTTP-01 challenge method requires port 80 to be accessible so that Let's Encrypt's servers can retrieve a verification token placed on the web server. Without this, the certificate authority has no way to confirm domain ownership and will refuse to issue a certificate.
 
 **Why does DNS propagation take time?**
 
-DNS records are cached by resolvers around the world according to each record's TTL value. When a record is updated, existing cached copies remain valid until they expire. The propagation delay is the time it takes for all caches globally to expire their old entries and fetch the updated record. DuckDNS uses a short TTL, which is why propagation was nearly instant in this lab.
+DNS records are cached by resolvers worldwide according to each record's TTL. When a record is updated, existing cached copies remain valid until they expire. The propagation delay is the time it takes for all caches globally to expire their old entries and fetch the updated record. DuckDNS uses a short TTL, which is why propagation was nearly instant in this lab.
 
 ---
 
@@ -754,7 +754,7 @@ DNS records are cached by resolvers around the world according to each record's 
 
 ---
 
-# Lab 3b — Bash Backup Scripting, Cron Jobs & Login Customisation
+# Lab 3b — Bash Backup Scripting, Cron Jobs & Login Customization
 
 **Module:** BRG-27 ISEA  
 **Day:** 3b  
@@ -785,7 +785,7 @@ Write a Bash script to automate file backups with date-stamped filenames, make t
 - Use cp, zip, and echo to automate backup and logging tasks
 - Grant execute permissions and move scripts to /usr/bin for system-wide access
 - Schedule automated tasks using cron, including hourly and boot-time execution
-- Customise the login experience using figlet and neofetch
+- Customize the login experience using figlet and neofetch
 
 ---
 
@@ -825,21 +825,21 @@ The root crontab was opened using `sudo crontab -e`. A new cron entry was added 
 
 ## Challenge 1 — Boot-Time Script Execution
 
-The root crontab was updated to include an `@reboot` entry alongside the existing hourly job. This ensures the backup script runs automatically every time the server starts, without any manual intervention. The final crontab listing confirmed both entries were active.
+The root crontab was updated to include an `@reboot` entry alongside the existing hourly job. This ensures the backup script runs automatically whenever the server starts, without manual intervention. The final crontab listing confirmed both entries were active.
 
 ![Crontab showing hourly and @reboot entries](lab-3b/08-crontab-reboot.png)
 
 ---
 
-## Challenge 2 — Login Message Customisation with figlet and neofetch
+## Challenge 2 — Login Message Customization with figlet and neofetch
 
-`figlet` and `neofetch` were installed from the Ubuntu package repository to customise the server login experience. figlet renders large ASCII-art banners from plain text, while neofetch displays a system summary including OS version, CPU, memory, and uptime alongside the Ubuntu logo.
+`figlet` and `neofetch` were installed from the Ubuntu package repository to customize the server login experience. figlet renders large ASCII art banners from plain text, while neofetch displays a system summary including OS version, CPU, memory, and uptime, alongside the Ubuntu logo.
 
 ![figlet and neofetch installation output](lab-3b/13-figlet-install.png)
 
 ![figlet and neofetch installation completed](lab-3b/14-figlet-install2.png)
 
-Both tools were run after installation to verify the output. figlet rendered a Welcome banner and neofetch displayed the full system summary for the Azure VM, confirming both tools were working correctly.
+Both tools were run after installation to verify the output. figlet rendered a Welcome banner, and neofetch displayed the full system summary for the Azure VM, confirming both tools were working correctly.
 
 ![figlet Welcome banner and neofetch system summary](lab-3b/07-figlet-neofetch.png)
 
@@ -849,15 +849,15 @@ Both tools were run after installation to verify the output. figlet rendered a W
 
 **Why is using absolute paths important in scripts run by cron?**
 
-Cron jobs run in a minimal environment with a restricted PATH variable, meaning commands and file references that work interactively may not be found when cron executes the same script. Using absolute paths such as `/usr/bin/zip` and `/home/azureuser/backup/` ensures the script functions correctly regardless of the environment it runs in.
+Cron jobs run in a minimal environment with a restricted PATH variable, meaning commands and file references that work interactively may not be found when cron executes the same script. Using absolute paths such as `/usr/bin/zip` and `/home/azureuser/backup/` ensures the script functions correctly regardless of the environment in which it runs.
 
 **What are the benefits of cloud exporting for backups?**
 
-Storing backups on a remote cloud server ensures they survive local failures — if the primary server is lost, corrupted, or compromised, the backup remains intact and accessible. Cloud export also supports geographic redundancy, version history, and centralised management of backups across multiple servers.
+Storing backups on a remote cloud server ensures they survive local failures — if the primary server is lost, corrupted, or compromised, the backup remains intact and accessible. Cloud export also supports geographic redundancy, version history, and centralized backup management across multiple servers.
 
 **How does cron differ from manual execution?**
 
-Manual execution requires a user to be logged in and actively run the command. Cron runs automatically at scheduled intervals without any user interaction, even when no one is logged into the server. This makes it suitable for routine maintenance tasks that must run reliably and consistently regardless of human availability.
+Manual execution requires a user to be logged in and to run the command actively. Cron runs automatically at scheduled intervals, without user interaction, even when no one is logged in to the server. This makes it suitable for routine maintenance tasks that must run reliably and consistently regardless of human availability.
 
 **What happens if SSH keys are not accepted ahead of time?**
 
@@ -865,11 +865,11 @@ The SCP command used to transfer backups to a remote server requires the remote 
 
 **Why was the SCP cloud export step not completed?**
 
-The SCP transfer step requires a second cloud server to act as the backup destination. In this lab environment, only one VM was provisioned, so there was no remote target available. In a production environment, this step would be implemented by provisioning a dedicated backup server or storage instance, pre-accepting its SSH fingerprint, and embedding the SCP command with an absolute key path directly in the backup script.
+The SCP transfer step requires a second cloud server to act as the backup destination. In this lab environment, only one VM was provisioned, so no remote target was available. In a production environment, this step would be implemented by provisioning a dedicated backup server or storage instance, pre-accepting its SSH fingerprint, and embedding the SCP command with an absolute key path directly in the backup script.
 
 **How can login messages help improve user and system engagement?**
 
-Tools such as figlet and neofetch can display system information, hostname, resource usage, and custom banners when a user logs in via SSH. This improves situational awareness by immediately showing the system state, and can also serve as a reminder of the server's purpose or environment — particularly useful in environments with multiple servers where administrators need to confirm which machine they have connected to.
+Tools such as figlet and neofetch can display system information, hostname, resource usage, and custom banners when a user logs in via SSH. This improves situational awareness by immediately showing the system state and can also serve as a reminder of the server's purpose or environment — particularly useful in environments with multiple servers, where administrators need to confirm which machine they are connected to.
 
 ---
 
@@ -889,7 +889,7 @@ Tools such as figlet and neofetch can display system information, hostname, reso
 - Wrote a Bash script that generates a date-stamped ZIP archive and logs each run with a timestamp
 - Made the script executable and moved it to /usr/bin for system-wide availability
 - Scheduled the script to run hourly and at boot using root crontab entries
-- Installed figlet and neofetch and verified login message customisation
+- Installed figlet and neofetch and verified login message customization
 
 ---
 
@@ -904,7 +904,7 @@ Tools such as figlet and neofetch can display system information, hostname, reso
 
 ## Objective
 
-Deploy MariaDB as an additional server service on the existing Ubuntu VM, verify the installation, and demonstrate practical database operations including creating a database and table, inserting records, and performing UPDATE and DELETE queries.
+Deploy MariaDB as an additional server service on the existing Ubuntu VM, verify the installation, and demonstrate practical database operations, including creating a database and table, inserting records, and performing UPDATE and DELETE queries.
 
 ---
 
@@ -930,7 +930,7 @@ Deploy MariaDB as an additional server service on the existing Ubuntu VM, verify
 
 ## Part 1 — Install and Verify MariaDB
 
-MariaDB was installed from the Ubuntu package repository. The package manager resolved and installed all required dependencies automatically. After installation, the MariaDB service was started and confirmed to be running.
+MariaDB was installed from the Ubuntu package repository. The package manager automatically resolved and installed all required dependencies. After installation, the MariaDB service was started and confirmed to be running.
 
 ![MariaDB installation output](lab-3b/05-mariadb-install.png)
 
@@ -952,7 +952,7 @@ The initial verification using the MariaDB shell confirmed a clean installation 
 
 ## Part 2 — Create Database and Table, Insert Records
 
-A test database named `labdb` was created and selected. A `students` table was defined with three columns — `id` as an integer primary key, `name` as a varchar, and `grade` as a two-character field. Two records were inserted and retrieved using a SELECT query to confirm the data was stored correctly.
+A test database named `labdb` was created and selected. A `students` table was defined with three columns — `id` as an integer primary key, `name` as a varchar column, and `grade` as a two-character column. Two records were inserted and retrieved using a SELECT query to confirm that the data was stored correctly.
 
 ![Database and table created, records inserted and retrieved](lab-3b/10-mariadb-table.png)
 
@@ -964,7 +964,7 @@ The table structure was inspected using the `DESCRIBE` command, confirming the c
 
 ## Part 3 — Update and Delete Records
 
-An `UPDATE` statement was used to change Bob's grade from B to A+. A `DELETE` statement then removed Alice's record. A final `SELECT` confirmed that only Bob's updated record remained in the table, verifying both operations executed correctly.
+An `UPDATE` statement was used to change Bob's grade from B to A+. A `DELETE` statement then removed Alice's record. A final `SELECT` confirmed that only Bob's updated record remained in the table, verifying that both operations executed correctly.
 
 ![UPDATE and DELETE operations with final SELECT result](lab-3b/12-mariadb-update-delete.png)
 
@@ -982,7 +982,7 @@ MariaDB was forked from MySQL and maintains full compatibility with MySQL's SQL 
 
 **What is the risk of running MariaDB without securing the installation?**
 
-A default MariaDB installation includes anonymous user accounts and a test database that are accessible without authentication. Without running `mysql_secure_installation`, these accounts could be exploited by local users or applications to access or modify data without authorisation.
+A default MariaDB installation includes anonymous user accounts and a test database that are accessible without authentication. Without running `mysql_secure_installation`, these accounts could be exploited by local users or applications to access or modify data without authorization.
 
 ---
 
