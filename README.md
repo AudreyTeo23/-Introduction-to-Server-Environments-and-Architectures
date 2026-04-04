@@ -118,7 +118,7 @@ Practised creating, copying, and viewing files. Checked system information using
 
 ## Part 6 — Super User & Permissions
 
-Demonstrated privilege escalation with `whoami` and `sudo whoami`. Attempted `adduser` without sudo — it failed. With sudo it succeeded (user `audrey_test` was already created in an earlier session).
+Demonstrated privilege escalation with `whoami` and `sudo whoami`. Attempted `adduser` without sudo — it failed. With sudo it succeeded.
 
 ![sudo whoami](lab-1b/06-sudo-whoami.png)
 
@@ -126,49 +126,55 @@ Demonstrated privilege escalation with `whoami` and `sudo whoami`. Attempted `ad
 
 ## Part 7 — SSH & User Management
 
-Installed OpenSSH server and created user `audrey_test` to simulate a partner. SSH'd into the local machine via the loopback address:
+Installed OpenSSH server and created user `audrey_test` to simulate a partner. SSH'd into the local machine via the loopback address.
 
-```bash
-sudo apt install openssh-server
-ssh audrey_test@127.0.0.1
-```
+![Install SSH](lab-1b/install%20SSH%201.png)
 
-![Install-SSH](lab-1b/install%20SSH%201.png)
+![Install SSH 2](lab-1b/install%20SSH%202.png)
 
-![Install-SSH-2](lab-1b/install%20SSH%202.png)
-
-![SSH-login](lab-1b/SH%20login.png)
+![SSH login](lab-1b/SH%20login.png)
 
 ---
 
-## Part 8 — Apache Web Server & Nmap
+## Part 8 — Apache Web Server, index.html & Nmap
 
-Installed Apache and confirmed it was serving the default page at `http://127.0.0.1`. Used Nmap to scan open ports — both port 22 (SSH) and port 80 (HTTP) showed as open.
+**Step 1 — Install Apache and test web access**
 
-```bash
-sudo apt install apache2
-nmap 127.0.0.1
-```
+Installed Apache using `sudo apt install apache2` and visited `http://127.0.0.1` in the browser to confirm the default page was live. Used `ip a` to determine the machine's IP address.
 
-![Install-Apache](lab-1b/install%20apache2.png)
+![Install Apache](lab-1b/install%20apache2.png)
 
-![Install-Apache-2](lab-1b/install%20apache2%202.png)
+![Install Apache 2](lab-1b/install%20apache2%202.png)
 
-![ip-a](lab-1b/ip%20a.png)
+![ip a](lab-1b/ip%20a.png)
 
-![Nmap scan](lab-1b/07-nmap.png)
+**Step 2 — Edit index.html and share with partner**
+
+Edited `/var/www/html/index.html` using nano to replace the default Apache page with a custom page — "Peer Page, Modified by Audrey Teo". Verified the content with `cat` then visited `http://127.0.0.1` in the browser to confirm the change was live.
+
+![Editing index.html in nano](lab-1b/09-edit-indexhtml.png)
+
+![cat index.html output](lab-1b/10-cat-indexhtml.png)
+
+![Peer page in browser](lab-1b/Peer%20page.png)
+
+**Step 3 — Scan ports with Nmap and observe open services**
+
+Ran `nmap 127.0.0.1` to scan the machine. Both port 22 (SSH) and port 80 (HTTP) showed as open, confirming Apache and SSH were running and accessible.
+
+![Nmap scan with Apache running](lab-1b/07-nmap.png)
+
+**Step 4 — Remove Apache and rerun Nmap to observe differences**
+
+Stopped and removed Apache using `sudo apt remove apache2 -y`, then reran Nmap. Port 80 disappeared from the results — only port 22 remained. This confirms that removing a service directly closes its port and removes it from the network surface.
+
+![Remove Apache and rerun Nmap](lab-1b/11-remove-apache-nmap.png)
 
 ---
 
 ## Part 9 — UFW Firewall
 
-Enabled UFW and allowed port 80. Status confirmed the rule was active for both IPv4 and IPv6.
-
-```bash
-sudo ufw enable
-sudo ufw allow 80
-sudo ufw status
-```
+Enabled UFW and allowed port 80. Status confirmed the rule was active for both IPv4 and IPv6. Blocking port 80 via UFW prevented web access even with Apache running — showing the firewall and the service are independent security layers.
 
 ![UFW status](lab-1b/08-ufw-status.png)
 
@@ -176,7 +182,7 @@ sudo ufw status
 
 ## Part 10 — File Compression with tar & bzip2
 
-Downloaded books from Project Gutenberg using `wget`, organised them into a directory, and compressed using `tar` and `bzip2`. `bzip2` was not installed by default — installed it with `apt` before proceeding.
+Downloaded books from Project Gutenberg using `wget`, organised them, and compressed using `tar` and `bzip2`. `bzip2` was not installed by default and was installed via `apt`.
 
 ![wget and bzip2 compression](lab-1b/wget%20bzip2.png)
 
@@ -184,22 +190,25 @@ Downloaded books from Project Gutenberg using `wget`, organised them into a dire
 
 ## Challenge Activities
 
-### Challenge 1 — Remote File Creation & Challenge 2 — gedit via SSH
+### Challenge 1 — Remote File Creation via SSH
 
-SSH'd into `audrey_test` and created `remote_task.txt` remotely. Then attempted to launch `gedit` over SSH — it failed because `gedit` is a GUI application and requires a display server. SSH provides terminal access only.
+SSH'd into `audrey_test` and created `remote_task.txt` remotely, confirming SSH gives full shell access.
 
-![Remote file creation and gedit fail](lab-1b/touchremotetask.png)
+![Remote file creation](lab-1b/touchremotetask.png)
+
+### Challenge 2 — Remote GUI Apps via SSH
+
+Attempted to launch `gedit` over SSH — it failed because `gedit` requires a display server. SSH provides terminal access only.
+
+![gedit fail and SCP](lab-1b/12-gedit-scp.png)
 
 ### Challenge 3 & 4 — SCP File Transfer
 
-Downloaded 10 books, compressed them into `final_archive.tar.bz2`, and transferred to the partner machine using SCP. Transfer completed at 117.2 MB/s.
+Used SCP to transfer a file and recursively copy the entire `books/` directory to the partner machine. Transfer completed successfully.
 
-```bash
-tar -cvjf final_archive.tar.bz2 pg*.txt
-scp final_archive.tar.bz2 audrey_test@127.0.0.1:~/
-```
+![SCP transfer](lab-1b/SCP%20transfer.png)
 
-![SCP-transfer](lab-1b/SCP%20transfer.png)
+![gedit fail and SCP recursive](lab-1b/12-gedit-scp.png)
 
 ---
 
@@ -218,8 +227,9 @@ scp final_archive.tar.bz2 audrey_test@127.0.0.1:~/
 - Explored `/etc`, `/var`, and `/home` and understood what each directory is used for
 - Used `man` pages as a built-in reference for command documentation
 - Installed and configured Apache, SSH server, and UFW firewall
+- Edited `index.html` using nano and verified changes with `cat`
 - Created a new user and SSH'd between accounts using the loopback address
-- Scanned ports with Nmap and confirmed open services
+- Scanned ports with Nmap before and after removing Apache — confirmed port 80 disappeared
 - Downloaded files with `wget`, compressed with `tar` and `bzip2`, transferred with `scp`
 - Demonstrated privilege escalation with `sudo` and discussed the principle of least privilege
 
