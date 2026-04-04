@@ -629,6 +629,286 @@ By reading from the /proc/net/dev file, which contains cumulative bytes transmit
 
 ---
 
-[Back to Main README](../README.md)
+# Lab 3a — DNS Configuration & HTTPS with Let's Encrypt
 
+**Module:** BRG-27 ISEA  
+**Day:** 3a  
+**Status:** Completed
 
+---
+
+## Objective
+
+Configure a publicly accessible domain name using DuckDNS, verify DNS propagation using command-line tools, and secure the Apache web server with a free TLS certificate issued by Let's Encrypt via Certbot. The end result is a fully functioning HTTPS-enabled web server accessible via a domain name.
+
+---
+
+## Environment
+
+| Component | Details |
+|-----------|---------|
+| Cloud Platform | Microsoft Azure |
+| VM Public IP | 98.70.33.154 |
+| Domain Name | xiaoxuee.duckdns.org |
+| DNS Provider | DuckDNS (free dynamic DNS) |
+| Web Server | Apache2 on Ubuntu 24.04.4 LTS |
+| Certificate Authority | Let's Encrypt (via Certbot) |
+
+---
+
+## Learning Objectives
+
+- Register a free domain name and configure an A record pointing to a cloud server
+- Verify DNS resolution using nslookup and dig from a Linux terminal
+- Install and run Certbot to obtain and deploy a TLS certificate automatically
+- Open port 443 in the Azure Network Security Group to allow HTTPS traffic
+- Verify a secured HTTPS connection in a browser and understand certificate metadata
+
+---
+
+## Part 1 — Register Domain and Configure A Record
+
+A free subdomain was registered at DuckDNS using a GitHub account. The domain `xiaoxuee.duckdns.org` was created and the A record was updated to point to the Azure VM's public IP address, `98.70.33.154`. DuckDNS confirmed the update immediately with a success message, and the change timestamp was recorded in the dashboard.
+
+![DuckDNS domain configured with correct IP](lab-3a/01-duckdns-domain.png)
+
+---
+
+## Part 2 — Verify DNS Propagation
+
+DNS resolution was tested from inside the Azure VM using both `nslookup` and `dig`. Both tools confirmed that `xiaoxuee.duckdns.org` resolved correctly to `98.70.33.154`. The dig output additionally showed a TTL of 46 seconds, status NOERROR, and query time of 0 milliseconds — indicating the record was already cached by the local resolver.
+
+![nslookup and dig DNS verification](lab-3a/02-dns-lookup.png)
+
+---
+
+## Part 3 — Access Server via Domain Name in Browser
+
+The domain name was entered into a browser to confirm that HTTP traffic was being routed correctly through DNS to the Apache web server. The custom page loaded successfully, displaying the expected content. The browser showed "Not secure" at this stage, as HTTPS had not yet been configured.
+
+![Custom page loading via domain name over HTTP](lab-3a/03-dns-browser.png)
+
+---
+
+## Part 4 — Install Certbot
+
+Certbot and the Apache plugin were installed from the Ubuntu package repository. All dependencies were resolved and installed automatically, including the ACME client libraries required for Let's Encrypt certificate issuance.
+
+![Certbot installation output](lab-3a/04-certbot-install.png)
+
+---
+
+## Part 5 — First Certbot Attempt (Failed — Learning Point)
+
+On the first run of Certbot, only the subdomain portion `xiaoxuee` was entered instead of the fully qualified domain name. Let's Encrypt rejected the request because a valid domain name must contain at least one dot. This is a real-world validation rule enforced by the ACME protocol — certificate authorities will not issue certificates for bare hostnames or single-label names.
+
+![Certbot failure due to incomplete domain name](lab-3a/05-certbot-fail.png)
+
+---
+
+## Part 6 — Successful Certificate Issuance
+
+Certbot was run again with the full domain name `xiaoxuee.duckdns.org`. The certificate was successfully issued by Let's Encrypt and automatically deployed to the Apache configuration. The certificate was saved to `/etc/letsencrypt/live/xiaoxuee.duckdns.org/` and is valid until 3 July 2026. Certbot also configured automatic renewal via a scheduled background task.
+
+![Certbot successful certificate issuance](lab-3a/06-certbot-success.png)
+
+---
+
+## Part 7 — Open Port 443 in Azure Network Security Group
+
+Before HTTPS could be accessed in a browser, port 443 needed to be opened in the Azure Network Security Group. A new inbound rule was created allowing TCP traffic on port 443 from any source, following the same process used earlier to open port 80 for HTTP.
+
+| Rule | Port | Protocol | Action |
+|------|------|----------|--------|
+| SSH | 22 | TCP | Allow |
+| HTTP | 80 | TCP | Allow |
+| HTTPS | 443 | TCP | Allow |
+
+![Azure NSG with HTTPS rule added](lab-3a/07-https-nsg.png)
+
+---
+
+## Part 8 — Verify HTTPS in Browser
+
+The site was accessed via `https://xiaoxuee.duckdns.org` in a browser. The padlock icon appeared in the address bar, confirming the TLS certificate was active, trusted, and the connection was encrypted. The custom web page loaded correctly over HTTPS without any certificate warnings.
+
+![HTTPS enabled — padlock visible in browser](lab-3a/08-https-browser.png)
+
+---
+
+## Reflection Questions
+
+**Why is HTTPS important for modern web applications?**
+
+HTTPS encrypts all data transmitted between the client and server, protecting it from interception, tampering, and eavesdropping. Without it, login credentials, form submissions, and session tokens are transmitted in plain text and can be captured by anyone on the same network. Modern browsers also mark HTTP sites as "Not secure", which reduces user trust and affects search engine ranking.
+
+**What entity issued your site's TLS certificate?**
+
+The certificate was issued by Let's Encrypt, a free, automated, and open certificate authority operated by the Internet Security Research Group (ISRG). It is trusted by all major browsers and operating systems.
+
+**How long is your certificate valid for, and how can it be renewed?**
+
+The certificate is valid for 90 days, expiring on 3 July 2026. Certbot automatically configures a scheduled renewal task that runs twice daily and renews the certificate when it is within 30 days of expiry. No manual intervention is required under normal circumstances.
+
+**What happens if a certificate expires and is not renewed?**
+
+Browsers will display a full-page warning blocking access to the site, stating that the connection is not private or that the certificate has expired. Most users will not proceed past this warning, effectively taking the site offline from a practical standpoint. APIs and automated clients may also refuse connections with expired certificates.
+
+**Why does Let's Encrypt require port 80 or 443 to be open for verification?**
+
+Let's Encrypt uses the ACME protocol to verify that the requester controls the domain they are requesting a certificate for. The HTTP-01 challenge method requires port 80 to be accessible so that Let's Encrypt's servers can retrieve a verification token placed on the web server. Without this, the certificate authority has no way to confirm domain ownership and will refuse to issue a certificate.
+
+**Why does DNS propagation take time?**
+
+DNS records are cached by resolvers around the world according to each record's TTL value. When a record is updated, existing cached copies remain valid until they expire. The propagation delay is the time it takes for all caches globally to expire their old entries and fetch the updated record. DuckDNS uses a short TTL, which is why propagation was nearly instant in this lab.
+
+---
+
+## Issues Encountered
+
+| Issue | Resolution |
+|-------|------------|
+| First Certbot attempt rejected | Entered the full domain `xiaoxuee.duckdns.org` instead of just the subdomain |
+| HTTPS not accessible after certificate issued | Port 443 was not yet open in the Azure NSG — added inbound rule for TCP 443 |
+
+---
+
+## Outcome
+
+- Registered a free domain `xiaoxuee.duckdns.org` via DuckDNS and configured the A record to point to the Azure VM
+- Verified DNS resolution using nslookup and dig from the VM terminal
+- Confirmed HTTP access via domain name in a browser
+- Installed Certbot and the Apache plugin from the Ubuntu repository
+- Successfully obtained and deployed a TLS certificate from Let's Encrypt
+- Opened port 443 in the Azure Network Security Group
+- Verified HTTPS access with a valid padlock in the browser
+
+---
+
+# Lab 3b — Bash Backup Scripting, Cron Jobs & Additional Server Services
+
+**Module:** BRG-27 ISEA  
+**Day:** 3b  
+**Status:** Completed
+
+---
+
+## Objective
+
+Write a Bash script to automate file backups with date-stamped filenames, make the script available system-wide, schedule it using cron for hourly execution, and log all output to a file. The lab was then extended by installing and verifying MariaDB as an example of deploying additional server services on the same Ubuntu VM.
+
+---
+
+## Environment
+
+| Component | Details |
+|-----------|---------|
+| Cloud Platform | Microsoft Azure |
+| VM | my-vm — Ubuntu 24.04.4 LTS |
+| Shell | Bash |
+| Database | MariaDB 10.11.14 |
+| User | azureuser |
+
+---
+
+## Learning Objectives
+
+- Write a Bash script using variables, date formatting, and file operations
+- Use cp, zip, and echo to automate backup and logging tasks
+- Grant execute permissions and move scripts to /usr/bin for system-wide access
+- Schedule automated tasks using cron
+- Install and verify a database server (MariaDB)
+
+---
+
+## Part 1 — Create Test Files and Directory Structure
+
+A Documents directory and a backup directory were created under the azureuser home folder to simulate a working environment. Three test files were created inside Documents to serve as the content to be backed up. The ls command confirmed all three files were in place before the script was written.
+
+![Test files and directory structure created](lab-3a/01-test-files.png)
+
+---
+
+## Part 2 — Write and Run the Backup Script
+
+A Bash script named `testscript` was written using a heredoc command to avoid paste limitations in the terminal. The script uses the `date` command to generate a timestamp in `DD_MM_YY_HHMM` format, recursively copies the Documents directory into the backup folder, creates a dated ZIP archive of the backup contents, copies the zip file to the home directory for easy access, and appends a log entry to `backup.log` with the completion timestamp.
+
+The script was made executable using chmod 777, then run manually to verify all steps completed without error. The zip output confirmed all three files were archived, and the log entry appeared immediately with the correct timestamp and filename.
+
+![Backup script executed — zip output and log entry confirmed](lab-3a/02-script-run.png)
+
+---
+
+## Part 3 — Move Script to /usr/bin and Test System-Wide Execution
+
+The script was moved to `/usr/bin/testscript` using sudo mv, making it accessible from any directory on the system without specifying a path. It was then run again simply by typing `testscript` from the home directory. The backup log showed a second entry with a new timestamp, confirming the script executed correctly as a system-wide command.
+
+![Script moved to /usr/bin and verified system-wide](lab-3a/03-chmod-move.png)
+
+---
+
+## Part 4 — Schedule Cron Job for Hourly Execution
+
+The root crontab was opened using `sudo crontab -e`. A new cron entry was added at the bottom of the file using the standard five-field cron syntax, scheduling the script to run at the start of every hour. The crontab was saved and the system confirmed the new crontab was installed successfully.
+
+![Crontab configured with hourly backup job](lab-3a/04-crontab.png)
+
+---
+
+## Part 5 — Install and Verify MariaDB
+
+MariaDB was installed as an example of deploying an additional server service. The package manager resolved and installed all 37 required packages automatically. After installation, the MariaDB service was started and a root login was performed to verify the database was operational. The SHOW DATABASES command returned the four default system databases — `information_schema`, `mysql`, `performance_schema`, and `sys` — confirming a clean and functional installation.
+
+![MariaDB installation output](lab-3a/05-mariadb-install.png)
+
+![MariaDB shell — SHOW DATABASES output](lab-3a/06-mariadb-verify.png)
+
+---
+
+## Reflection Questions
+
+**Why is using absolute paths important in scripts run by cron?**
+
+Cron jobs run in a minimal environment with a restricted PATH variable, meaning commands and file references that work interactively may not be found when cron executes the same script. Using absolute paths such as `/usr/bin/zip` and `/home/azureuser/backup/` ensures the script functions correctly regardless of the environment it runs in.
+
+**What are the benefits of cloud exporting for backups?**
+
+Storing backups on a remote cloud server ensures they survive local failures — if the primary server is lost, corrupted, or compromised, the backup remains intact and accessible. Cloud export also supports geographic redundancy, version history, and centralised management of backups across multiple servers.
+
+**How does cron differ from manual execution?**
+
+Manual execution requires a user to be logged in and actively run the command. Cron runs automatically at scheduled intervals without any user interaction, even when no one is logged into the server. This makes it suitable for routine maintenance tasks that must run reliably and consistently regardless of human availability.
+
+**What happens if SSH keys are not accepted ahead of time?**
+
+The SCP command used to transfer backups to a remote server requires the remote host's fingerprint to be accepted before the transfer can proceed unattended. If the fingerprint has not been accepted, the SSH handshake will pause and prompt for confirmation — causing the cron job to hang or fail silently, as there is no interactive terminal available during cron execution.
+
+**Why was the SCP cloud export step not completed?**
+
+The SCP transfer step requires a second cloud server to act as the backup destination. In this lab environment, only one VM was provisioned, so there was no remote target available. In a production environment, this step would be implemented by provisioning a dedicated backup server or storage instance, pre-accepting its SSH fingerprint, and embedding the SCP command with an absolute key path directly in the backup script.
+
+**How can login messages help improve user and system engagement?**
+
+Tools such as figlet and neofetch can display system information, hostname, resource usage, and custom banners when a user logs in via SSH. This improves situational awareness by immediately showing the system state, and can also serve as a reminder of the server's purpose or environment — particularly useful in environments with multiple servers where administrators need to confirm which machine they have connected to.
+
+---
+
+## Issues Encountered
+
+| Issue | Resolution |
+|-------|------------|
+| zip command not found on first script run | Installed zip using apt before re-running the script |
+| Log file permission denied when writing to /var/log | Changed log file path to /home/azureuser/backup.log, which the user has write access to |
+| SCP cloud export step not completable | Only one VM was provisioned — documented as a known limitation in the reflection |
+
+---
+
+## Outcome
+
+- Created a test directory structure with sample files to simulate a working backup target
+- Wrote a Bash script that generates a date-stamped ZIP archive and logs each run with a timestamp
+- Made the script executable and moved it to /usr/bin for system-wide availability
+- Scheduled the script to run hourly using a root crontab entry
+- Installed and verified MariaDB as an additional server service, confirming database connectivity via the MariaDB shell
+
+---
