@@ -94,9 +94,9 @@ Explored the three key system directories:
 
 | Directory | Purpose |
 |-----------|---------|
-| `/etc` | System-wide configuration files — network, accounts, service configs |
-| `/var` | Variable runtime data — logs, mail, spool, crash reports |
-| `/home` | User home directories — personal files and settings per user |
+| `/etc` | System-wide configuration files network, accounts, service configs |
+| `/var` | Variable runtime data logs, mail, spool, crash reports |
+| `/home` | User home directories, personal files, and settings per user |
 
 ![Directory structure](lab-1b/03-directory-structure.png)
 
@@ -152,7 +152,7 @@ Edited `/var/www/html/index.html` using nano to replace the default Apache page 
 
 ## Part 9 — Scan Ports with Nmap and Remove Apache
 
-Ran `nmap 127.0.0.1` to scan open ports — both port 22 (SSH) and port 80 (HTTP) showed as open with Apache running. Removed Apache and reran Nmap, port 80 disappeared, confirming that removing a service directly closes its port.
+Ran `nmap 127.0.0.1` to scan open ports, both port 22 (SSH) and port 80 (HTTP) showed as open with Apache running. Removed Apache and reran Nmap, port 80 disappeared, confirming that removing a service directly closes its port.
 
 ![Nmap scan with Apache running](lab-1b/07-nmap.png)
 
@@ -214,7 +214,7 @@ Compressed the tar archive using `bzip2`, then decompressed and extracted it to 
 
 ## Part 16 — User Management and Privilege Escalation (Azure VM)
 
-A new user named `labuser` was created on the Azure VM using `sudo adduser labuser`. The account was then added to the `sudo` group using `sudo usermod -aG sudo labuser`. The `groups labuser` command confirmed that `labuser` was a member of the `labuser`, `sudo`, and `users` groups, verifying that administrative access was granted explicitly and intentionally rather than by default. This reinforces the principle of least privilege — users should only receive the minimum permissions required for their role.
+A new user named `labuser` was created on the Azure VM using `sudo adduser labuser`. The account was then added to the `sudo` group using `sudo usermod -aG sudo labuser`. The `groups labuser` command confirmed that `labuser` was a member of the `labuser`, `sudo`, and `users` groups, verifying that administrative access was granted explicitly and intentionally rather than by default. This reinforces the principle of least privilege: users should have only the permissions required for their role.
 
 ![adduser and usermod — labuser added to sudo group](lab-1b/01-adduser-usermod.png)
 
@@ -230,7 +230,7 @@ A test file named `acltest.txt` was created in the azureuser home directory. Its
 
 ## Part 18 — File Permission Levels with chmod
 
-Two distinct permission states were applied to `acltest.txt` to demonstrate the practical effect of the Unix permission model. First, `chmod 700` restricted access entirely to the file owner, producing `rwx------`. This is the appropriate permission level for private scripts or sensitive configuration files. Second, `chmod 644` was applied, producing `rw-r--r--`, granting the owner read and write access while allowing all other users read-only access. This is the standard permission level for web-served content and shared reference files. Both states were confirmed using `ls -la`.
+Two distinct permission states were applied to `acltest.txt` to demonstrate the practical effect of the Unix permission model. First, `chmod 700` restricted access entirely to the file owner, setting the permissions to `rwx------`. This is the appropriate permission level for private scripts or sensitive configuration files. Second, `chmod 644` was applied, producing `rw-r--r--`, granting the owner read and write access while allowing all other users read-only access. This is the standard permission level for web-served content and shared reference files. Both states were confirmed using `ls -la`.
 
 ![chmod 700 and chmod 644 permission states confirmed](lab-1b/03-chmod.png)
 
@@ -240,7 +240,7 @@ Two distinct permission states were applied to `acltest.txt` to demonstrate the 
 
 Access Control Lists (ACLs) extend the standard Unix permission model by allowing fine-grained access rules for specific named users or groups, independent of the file owner and group. The `acl` package was installed using `sudo apt install acl -y`. An ACL entry was then applied to `acltest.txt` using `sudo setfacl -m u:azureuser:rw /home/azureuser/acltest.txt`, granting explicit read-write access to the `azureuser` account at the ACL level. The `getfacl` command confirmed the entry was applied correctly, displaying `user::rw-`, `user:azureuser:rw-`, `group::rw-`, `mask::rw-`, and `other::r--`.
 
-ACLs are particularly useful when multiple users or processes require different levels of access to a shared file without changing its primary owner or group — a common requirement in multi-user server environments.
+ACLs are particularly useful when multiple users or processes require different levels of access to a shared file without changing its primary owner or group, a common requirement in multi-user server environments.
 
 ![setfacl applied and getfacl output confirming ACL entries](lab-1b/16-acl-setfacl-getfacl.png)
 
@@ -248,9 +248,9 @@ ACLs are particularly useful when multiple users or processes require different 
 
 ## Part 20 — File System Search with find
 
-The `find` command was used to search the Azure VM file system by multiple criteria. Running `find /home/azureuser -name "*.zip"` returned all ZIP archives created by the automated backup script, providing a clear audit trail of backup activity. The `-mtime -1` flag filtered for files modified within the last 24 hours, and `-size +1M` identified files larger than one megabyte. The `locate` command was also tested using the `plocate` package (the Ubuntu 24.04 replacement for `mlocate`), returning the full path of the `testscript` binary in `/usr/bin/`.
+The `find` command was used to search the Azure VM file system by multiple criteria. Running `find /home/azureuser -name "*.zip"` returned all ZIP archives created by the automated backup script, providing a clear audit trail of backup activity. The `-mtime -1` flag filtered for files modified within the last 24 hours, and `-size +1M` identified files larger than one megabyte. The `locate` command was also tested using the `plocate` package (the Ubuntu 24.04 replacement for `mlocate`), which returned the full path of the `testscript` binary as `/usr/bin/`.
 
-These search techniques are essential for routine system maintenance — identifying old backups consuming disk space, locating recently modified files after an incident, and auditing large files before storage runs out.
+These search techniques are essential for routine system maintenance, identifying old backups consuming disk space, locating recently modified files after an incident, and auditing large files before storage runs out.
 
 ![find results showing zip archives, mtime filter, size filter, and locate output](lab-1b/15-find-locate.png)
 
@@ -307,13 +307,13 @@ Used SCP to transfer a single file and recursively copy the entire `books/` dire
 
 ## Day 1 Reflection
 
-Day 1 was about learning to navigate and control a Linux system from first principles. Starting with the command line felt unfamiliar at first — there is no GUI to fall back on, and every action requires knowing the exact command and its syntax. Working through `pwd`, `ls`, `cd`, `mkdir`, and `touch` made it clear that the terminal is not just an alternative to a GUI but a more precise and scriptable way to interact with a system. Understanding the directory structure — why `/etc` holds configuration, `/var` holds runtime data, and `/home` holds user files — made the system feel less like a black box and more like something with a logical design.
+Day 1 was about learning to navigate and control a Linux system from first principles. Starting with the command line felt unfamiliar at first; there is no GUI to fall back on, and every action requires knowing the exact command and its syntax. Working through `pwd`, `ls`, `cd`, `mkdir`, and `touch` made it clear that the terminal is not just an alternative to a GUI but a more precise and scriptable way to interact with a system. Understanding the directory structure, why `/etc` holds configuration, `/var` holds runtime data, and `/home` holds user files made the system feel less like a black box and more like something with a logical design.
 
-Installing Apache and testing it over the loopback address brought together several concepts at once. The web server had to be installed, the firewall had to allow port 80, and the browser had to be pointed at the right IP — if any one of those steps was wrong, nothing worked. That dependency chain was an early lesson in how services, network rules, and DNS must be aligned for a user to reach a page. Running Nmap before and after removing Apache showed that a service and a firewall rule are two separate controls: removing the service closed the port even without touching the firewall, which reinforced that the firewall is not the only line of defense.
+Installing Apache and testing it over the loopback address brought together several concepts at once. The web server had to be installed, the firewall had to allow port 80, and the browser had to be pointed to the correct IP address. If any one of those steps was wrong, nothing worked. That dependency chain was an early lesson in how services, network rules, and DNS must be aligned for a user to reach a page. Running Nmap before and after removing Apache showed that a service and a firewall rule are two separate controls: removing the service closed the port even without touching the firewall, which reinforced that the firewall is not the only line of defense.
 
-Managing users and applying permissions made the security model concrete. Using `sudo` only when necessary, creating `audrey_test` as a separate account, and SSHing into it locally demonstrated why privilege separation matters — running everything as root means a single mistake can compromise the entire system. The permissions work extended this further: `chmod 700` restricted a file to the owner only, `chmod 644` allowed others to read it but not modify it, and ACLs allowed a specific named user to be granted access without changing the file's owner or group. This layered approach — where standard permissions set the baseline and ACLs provide exceptions — is how real multi-user environments manage shared resources without opening everything up. Setting a file to `777` may seem convenient for testing, but it removes all control at once and creates habits that lead to incidents in production.
+Managing users and applying permissions made the security model concrete. Using `sudo` only when necessary, creating `audrey_test` as a separate account, and SSHing into it locally demonstrated why privilege separation matters; running everything as root means a single mistake can compromise the entire system. The permissions work extended this further: `chmod 700` restricted a file to the owner only, `chmod 644` allowed others to read it but not modify it, and ACLs allowed a specific named user to be granted access without changing the file's owner or group. This layered approach, where standard permissions set the baseline and ACLs provide exceptions, is how real multi-user environments manage shared resources without opening everything up. Setting a file to `777` may seem convenient for testing, but it removes all control at once and creates habits that lead to incidents in production.
 
-Searching the file system with `find` tied the day together by showing how to audit what is actually on a system. Finding backup archives by name, filtering by modification time, and identifying large files by size are all tasks that come up in real administration work — whether that is cleaning up disk space, investigating a change after an incident, or locating a script that was placed somewhere unexpected. The difference between `-mtime` and `-atime` was a useful distinction: a file that has been read but not changed would be invisible to a modify-time search, which matters when tracing unauthorized access to sensitive configuration files or private keys.
+Searching the file system with `find` tied the day together by showing how to audit what is actually on a system. Finding backup archives by name, filtering by modification time, and identifying large files by size are all tasks that come up in real administration work, whether that is cleaning up disk space, investigating a change after an incident, or locating a script that was placed somewhere unexpected. The difference between `-mtime` and `-atime` was a useful distinction: a file that has been read but not changed would be invisible to a modify-time search, which matters when tracing unauthorized access to sensitive configuration files or private keys.
 
 ---
 
@@ -384,15 +384,17 @@ The table below summarises the calculation method for each cost component side b
 | HP LaserJet Pro M404n | SGD $9,217.00 |
 | **Canon saves** | **SGD $5,638.70** |
 
-The Canon PIXMA G3020 is significantly cheaper over five years. Its ink tank system costs a fraction of laser toner, and its 11W active power draw, compared with 380W for the HP, means electricity costs are negligible. Even with contingency replacement units budgeted for both printers, Canon remains the more cost-effective choice. The HP M404n offers faster speeds (38 ppm vs 9 ipm) and suits mono-only, high-speed office environments where print speed and network reliability outweigh running costs.
+The Canon PIXMA G3020 is significantly cheaper over five years. Its ink tank system costs a fraction of laser toner, and its 11W active power draw versus 380W for the HP means electricity costs are negligible. Even with contingency replacement units budgeted for both printers, Canon remains the more cost-effective choice. The HP M404n offers faster speeds (38 ppm vs 9 ipm) and suits mono-only, high-speed office environments where print speed and network reliability outweigh running costs.
 
 ---
 
 ## Day 2a Reflection
 
-The TCO exercise reframed how I think about cost. The instinct when comparing two products is to look at the purchase price, but the purchase price is often the smallest part of what something actually costs over time. The Canon printer costs less upfront than the HP, but the more significant difference came from consumables and electricity — the HP's laser toner and 380W power draw accumulated costs that dwarfed the initial price gap over five years. Building the spreadsheet forced every assumption to be made explicit and documented, making the conclusion traceable rather than just a feeling.
+The TCO exercise reframed how I think about cost. The instinct when comparing two products is to look at the purchase price, but the purchase price is often the smallest part of what something actually costs over time. The Canon printer costs less upfront than the HP, but the more significant difference came from consumables and electricity, the HP's laser toner and 380W power draw accumulated costs that dwarfed the initial price gap over five years. Building the spreadsheet forced every assumption to be made explicit and documented, making the conclusion traceable rather than just a feeling.
 
-The same logic applies directly to cloud infrastructure. Choosing a cloud provider based on the cheapest compute instance ignores data egress fees, snapshot storage, support tiers, and the cost of downtime if the provider has weaker SLAs. A proper TCO comparison for a cloud environment would model all of those costs across a realistic usage pattern — including peak loads, idle periods, and growth projections — before committing to a platform. The printer exercise was small in scope, but the methodology it taught is the same one used in enterprise procurement decisions worth orders of magnitude more.
+The same logic applies directly to cloud infrastructure. Choosing a cloud provider based on the cheapest compute instance ignores data egress fees, snapshot storage, support tiers, and the cost of downtime if the provider has weaker SLAs. A proper TCO comparison for a cloud environment would model all of those costs across a realistic usage pattern, including peak loads, idle periods, and growth projections before committing to a platform. The printer exercise was small in scope, but the methodology it taught is the same one used in enterprise procurement decisions worth orders of magnitude more.
+
+![Reflection Questions](lab-2a/02-Reflection%20Question4.png)
 
 ---
 
@@ -600,13 +602,13 @@ A resource-monitoring script was written that first asks the user how many monit
 
 ## Day 2b Reflection
 
-Provisioning a cloud VM felt very different from running something locally. The machine exists somewhere else, is accessible from anywhere, and starts accruing costs the moment it runs, which immediately makes the decisions around security groups and auto-shutdown feel real rather than academic. Opening port 22 was the first necessary step because SSH is the only way in; without it, the VM is unreachable. Opening port 80 happened after Apache was installed, not before, because there is no reason to expose a port until something is listening on it. That order of operations — install the service, then open the port — is the right discipline to build, and it is easy to do it backward and forget to close ports later.
+Provisioning a cloud VM felt very different from running something locally. The machine exists elsewhere, is accessible from anywhere, and starts incurring costs the moment it runs, which immediately makes the decisions around security groups and auto-shutdown feel real rather than academic. Opening port 22 was the first necessary step because SSH is the only way in; without it, the VM is unreachable. Opening port 80 happened after Apache was installed, not before, because there is no reason to expose a port until something is listening on it. That order of operations, install the service, then open the port, is the right discipline to build, and it is easy to do it backward and forget to close ports later.
 
-The SSH key issue was an early lesson in how unforgiving security controls can be. The private key was not saved when the VM was first created, so accessing the machine required returning to the Azure portal and resetting the credentials entirely. Once the key was downloaded and in use, the `chmod 600` step was not optional — SSH refuses to connect if the private key is readable by other users, because a world-readable private key is effectively no security at all. That enforcement by the SSH client is a good example of a system that makes the secure path the only path.
+The SSH key issue was an early lesson in how unforgiving security controls can be. The private key was not saved when the VM was first created, which meant accessing the machine required going back to the Azure portal and resetting the credentials entirely. Once the key was downloaded and in use, the `chmod 600` step was not optional. SSH refuses to connect if the private key is readable by other users, because a world-readable private key is effectively no security at all. That enforcement by the SSH client is a good example of a system that makes the secure path the only path.
 
-Working through the Bash scripting exercises connected the command-line skills from Day 1 to something more practical. The shebang line at the top of a script tells the operating system which interpreter to run — without it, the script may not execute correctly depending on the shell environment. The for loop, if/elif/else conditional, and resource monitoring script each demonstrated a different layer of what automation can do: repeat a task, make a decision based on input, and check the state of a running system. The resource monitor reading from `/proc/net/dev` to calculate bandwidth was a good illustration of how Linux exposes system internals through the file system; instead of needing a special tool, you can read the raw data directly and calculate what you need.
+Working through the Bash scripting exercises connected the command-line skills from Day 1 to something more practical. The shebang line at the top of a script tells the operating system which interpreter to run the script with. Without it, the script may not execute correctly, depending on the shell environment. The for loop, if/elif/else conditional, and resource monitoring script each demonstrated a different layer of what automation can do: repeat a task, make a decision based on input, and check the state of a running system. The resource monitor reading from `/proc/net/dev` to calculate bandwidth was a good illustration of how Linux exposes system internals through the file system; instead of needing a special tool, you can read the raw data directly and calculate what you need.
 
-Leaving a VM running continuously is a risk on two fronts: it keeps charging even when no work is happening, and it keeps the attack surface exposed around the clock. Configuring auto-shutdown to power the VM down each evening addressed both — it bounded the cost and reduced the window during which the machine could be targeted. The distinction between DNS and `/etc/hosts` came up naturally when setting up the server: DNS propagates globally and is the right tool for a public service, while `/etc/hosts` is a local override useful in development but invisible to anyone outside the machine.
+Leaving a VM running continuously is a risk on two fronts: it keeps charging even when no work is happening, and it keeps the attack surface exposed around the clock. Configuring auto-shutdown to power the VM down each evening addressed both its cost and reduced the window during which the machine could be targeted. The distinction between DNS and `/etc/hosts` came up naturally when setting up the server: DNS propagates globally and is the right tool for a public service, while `/etc/hosts` is a local override useful in development but invisible to anyone outside the machine.
 
 ---
 
@@ -674,7 +676,7 @@ Configure a publicly accessible domain name using DuckDNS, verify DNS propagatio
 
 ## Part 1 — Register Domain and Configure A Record
 
-A free subdomain was registered at DuckDNS using a GitHub account. The domain `xiaoxuee.duckdns.org` was created and the A record was updated to point to the Azure VM's public IP address, `98.70.33.154`. DuckDNS confirmed the update immediately with a success message, and the change timestamp was recorded in the dashboard.
+A free subdomain was registered at DuckDNS using a GitHub account. The domain `xiaoxuee.duckdns.org` was created, and the A record was updated to point to the Azure VM's public IP address, `98.70.33.154`. DuckDNS confirmed the update immediately with a success message, and the change timestamp was recorded in the dashboard.
 
 ![DuckDNS domain configured with correct IP](lab-3a/01-duckdns-domain.png)
 
@@ -682,7 +684,7 @@ A free subdomain was registered at DuckDNS using a GitHub account. The domain `x
 
 ## Part 2 — Verify DNS Propagation
 
-DNS resolution was tested from inside the Azure VM using both `nslookup` and `dig`. Both tools confirmed that `xiaoxuee.duckdns.org` resolved correctly to `98.70.33.154`. The dig output also showed a TTL of 46 seconds, status NOERROR, and a query time of 0 milliseconds — indicating that the record was already cached by the local resolver.
+DNS resolution was tested from inside the Azure VM using both `nslookup` and `dig`. Both tools confirmed that `xiaoxuee.duckdns.org` resolved correctly to `98.70.33.154`. The dig output also showed a TTL of 46 seconds, status NOERROR, and a query time of 0 milliseconds, indicating that the record was already cached by the local resolver.
 
 ![nslookup and dig DNS verification](lab-3a/02-dns-lookup.png)
 
@@ -706,7 +708,7 @@ Certbot and the Apache plugin were installed from the Ubuntu package repository.
 
 ## Part 5 — First Certbot Attempt (Failed — Learning Point)
 
-On the first run of Certbot, only the subdomain portion `xiaoxuee` was entered instead of the fully qualified domain name. Let's Encrypt rejected the request because a valid domain name must contain at least one dot. This is a real-world validation rule enforced by the ACME protocol — certificate authorities will not issue certificates for bare hostnames or single-label names.
+On the first run of Certbot, only the subdomain portion `xiaoxuee` was entered instead of the fully qualified domain name. Let's Encrypt rejected the request because a valid domain name must contain at least one dot. This is a real-world validation rule enforced by the ACME protocol that certificate authorities will not issue certificates for bare hostnames or single-label names.
 
 ![Certbot failure due to incomplete domain name](lab-3a/05-certbot-fail.png)
 
@@ -736,26 +738,27 @@ Before HTTPS could be accessed in a browser, port 443 needed to be opened in the
 
 ## Part 8 — Verify HTTPS in Browser
 
-The site was accessed via `https://xiaoxuee.duckdns.org` in a browser. The padlock icon appeared in the address bar, confirming that the TLS certificate was active and trusted, and that the connection was encrypted. The custom web page loaded correctly over HTTPS without any certificate warnings.
+The site was accessed via `https://xiaoxuee.duckdns.org` in a browser. The padlock icon appeared in the address bar, confirming the TLS certificate was active, trusted, and the connection was encrypted. The custom web page loaded correctly over HTTPS without any certificate warnings.
 
 ![HTTPS enabled — padlock visible in browser](lab-3a/08-https-browser.png)
 
 ---
 
-## Day 3a Reflection
+## Day 3 Reflection
 
-Day 3a was the day when all the infrastructure layers built across the previous sessions had to work together simultaneously, and that dependency made every step feel more consequential. DNS had to be configured correctly before anything else could happen — without the A record pointing to the VM's public IP, there was no domain to issue a certificate for. Verifying propagation using `nslookup` and `dig`, rather than just a browser, was important because browsers cache DNS locally, so they might show a correct result even when the global DNS system has not yet updated. The 46-second TTL that dig reported explained why DuckDNS propagated so quickly: resolvers around the world were forced to refresh their cached entries within less than a minute.
+Day 3 was where all the infrastructure layers built across the previous sessions had to work together simultaneously, and that dependency made every step feel more consequential. DNS had to be configured correctly before anything else could happen, without the A record pointing to the VM's public IP; there was no domain to issue a certificate for. Verifying propagation using `nslookup` and `dig`, rather than just a browser, was important because browsers cache DNS locally, so they might show a correct result even when the global DNS system has not yet updated. The 46-second TTL that dig reported explained why DuckDNS propagated so quickly: resolvers around the world were forced to refresh their cached entries within less than a minute.
 
-The Certbot process made the interdependency of the entire stack explicit. The first run failed because only the subdomain label was entered rather than the fully qualified domain name — a straightforward input error, but one that revealed how precisely the ACME protocol validates domain names. Port 80 had to remain open even after the goal was HTTPS, because the HTTP-01 challenge Certbot uses to verify domain ownership requires Let's Encrypt's servers to retrieve a token from port 80. Only after that verification succeeded could the certificate be issued and port 443 become meaningful. Opening port 443 in the Azure NSG was then the final step — without it, the certificate existed on the server but was unreachable from the outside. The padlock appearing in the browser at the end of the day was not just a visual confirmation that HTTPS worked; it represented the complete chain from a registered domain, through DNS resolution, through a verified TLS certificate, through an open firewall rule, to an encrypted connection — every link in that chain had to be correctly configured, and a failure at any point would have broken the whole thing.
+The Certbot process made the interdependency of the entire stack explicit. The first run failed because only the subdomain label was entered rather than the fully qualified domain name, a straightforward input error, but one that revealed how precisely the ACME protocol validates domain names. Port 80 had to remain open even after the goal was HTTPS, because the HTTP-01 challenge Certbot uses to verify domain ownership requires Let's Encrypt's servers to retrieve a token from port 80. Only after that verification succeeded could the certificate be issued and port 443 become meaningful. Opening port 443 in the Azure NSG was then the final step; without it, the certificate existed on the server but was unreachable from the outside. The padlock in the browser represented the complete chain from a registered domain, through DNS resolution, a verified TLS certificate, an open firewall rule, to an encrypted connection. Every link had to be correctly configured, and a failure at any point would have broken the whole thing.
+
+The second half of Day 3 applied the same discipline to automation. Writing the backup script was straightforward once the logic was clear: generate a timestamp, copy the source directory, zip it, and log the result. But getting it to run correctly under cron required understanding why the same script behaves differently in an automated context. Cron executes in a minimal shell environment with a restricted PATH, meaning a command like `zip` that works perfectly in an interactive terminal may not be found at all when cron runs the script. Using absolute paths throughout was not an optional tidiness measure; it was what made the difference between a script that works reliably and one that fails silently at 2 am with no indication of what went wrong. Adding an `@reboot` entry further extended this: a backup that runs only hourly provides no protection during the window between a server starting and the first scheduled run. The SCP cloud export step could not be completed because only one VM was provisioned, a genuine limitation that highlighted an important aspect of backup strategy: a backup stored on the same machine as the data it protects offers no resilience against the failure of that machine. The figlet and neofetch work reinforced the same principle that appeared throughout the module in environments with multiple servers; every detail that helps an administrator immediately orient themselves when they connect reduces the risk of making a change on the wrong machine.
 
 ---
-
 ## Issues Encountered
 
 | Issue | Resolution |
 |-------|------------|
 | First Certbot attempt rejected | Entered the full domain `xiaoxuee.duckdns.org` instead of just the subdomain |
-| HTTPS not accessible after certificate issued | Port 443 was not yet open in the Azure NSG — added inbound rule for TCP 443 |
+| HTTPS not accessible after certificate issued | Port 443 was not yet open in the Azure NSG, added an inbound rule for TCP 443 |
 
 ---
 
@@ -781,7 +784,7 @@ The Certbot process made the interdependency of the entire stack explicit. The f
 
 ## Objective
 
-Write a Bash script to automate file backups with date-stamped filenames, make it available system-wide, schedule it with cron for hourly and boot-time execution, and log all output to a file. The lab was then extended by customizing the server login experience using figlet and neofetch.
+Write a Bash script to automate file backups with date-stamped filenames, make the script available system-wide, schedule it using cron for hourly and boot-time execution, and log all output to a file. The lab was then extended by customizing the server login experience using figlet and neofetch.
 
 ---
 
@@ -862,12 +865,6 @@ Both tools were run after installation to verify the output. figlet rendered a W
 
 ---
 
-## Day 3b Reflection
-
-Day 3b brought together the scripting skills from Day 2b and applied them to a real operational problem: reliable, automated backup. Writing the script was straightforward once the logic was clear: generate a timestamp, copy the source directory, zip it, log the result — but getting it to run correctly under cron required understanding why the same script behaves differently in an automated context. Cron executes in a minimal shell environment with a restricted PATH, meaning a command like `zip` that works perfectly in an interactive terminal may not be found at all when cron runs the script. Using absolute paths throughout, both in the script and in the crontab entry itself, was not an optional tidiness measure — it was what made the difference between a script that works reliably and one that fails silently at 2 am with no indication of what went wrong.
-
-The `@reboot` crontab entry extended this thinking further: a backup that runs only hourly provides no protection during the window between a server starting and the first scheduled run. Adding a boot-time execution entry ensured the server would always have a current backup, regardless of when it last ran. The SCP cloud export step could not be completed because only one VM was provisioned, and without a second server, there is no remote destination. This was a genuine limitation rather than a configuration error, and it highlighted an important aspect of backup strategy: a backup stored on the same machine as the data it protects offers no resilience against the failure of that machine. The figlet and neofetch work at the end of the day was lighter, but it reinforced the same principle that appeared throughout the module in environments with multiple servers; every detail that helps an administrator immediately orient themselves when they connect reduces the risk of making a change on the wrong machine.
-
 ---
 
 ## Issues Encountered
@@ -876,7 +873,7 @@ The `@reboot` crontab entry extended this thinking further: a backup that runs o
 |-------|------------|
 | zip command not found on first script run | Installed zip using apt before re-running the script |
 | Log file permission denied when writing to /var/log | Changed log file path to /home/azureuser/backup.log, which the user has write access to |
-| SCP cloud export step not completable | Only one VM was provisioned — documented as a known limitation in the reflection |
+| SCP cloud export step not completable | Only one VM was provisioned documented as a known limitation in the reflection |
 
 ---
 
@@ -969,11 +966,11 @@ An `UPDATE` statement was used to change Bob's grade from B to A+. A `DELETE` st
 
 ## Day 4 Reflection
 
-Deploying MariaDB independently was a different kind of challenge from the earlier labs. The installation itself was straightforward, but the work that followed, creating a database, defining a table schema, inserting records, and then modifying and deleting them, required thinking about data integrity rather than just commands. The primary key on the `students` table is what made the UPDATE and DELETE statements safe to run: without it, there is no reliable way to target a specific row, and a missing WHERE clause would affect every record in the table. That is not a theoretical risk — it is one of the most common causes of accidental data loss in production databases.
+Deploying MariaDB independently was a different kind of challenge from the earlier labs. The installation itself was straightforward, but the work that followed, creating a database, defining a table schema, inserting records, and then modifying and deleting them, required thinking about data integrity rather than just commands. The primary key on the `students` table is what made the UPDATE and DELETE statements safe to run: without it, there is no reliable way to target a specific row, and a missing WHERE clause would affect every record in the table. That is not a theoretical risk; it is one of the most common causes of accidental data loss in production databases.
 
-The CRUD exercise also made it clear that installing a service is only the beginning. A default MariaDB installation includes anonymous user accounts and a test database that require no authentication, which means the database is effectively open to any local process or user until `mysql_secure_installation` is run. The labs were conducted in a controlled environment where the VM's NSG blocked external access to port 3306, providing a layer of network protection, but in a production deployment, that layer cannot be the only one. Securing the database at the application level — removing anonymous accounts, setting a strong root password, and restricting remote root login is not optional.
+The CRUD exercise also made it clear that installing a service is only the beginning. A default MariaDB installation includes anonymous user accounts and a test database that require no authentication, which means the database is effectively open to any local process or user until `mysql_secure_installation` is run. The labs were conducted in a controlled environment where the VM's NSG blocked external access to port 3306, providing a layer of network protection, but in a production deployment, that layer cannot be the only one. Securing the database at the application level, removing anonymous accounts, setting a strong root password, and restricting remote root login are not optional.
 
-The choice of MariaDB over MySQL is worth reflecting on. MariaDB maintains full compatibility with MySQL's SQL syntax and client libraries, meaning any application built for MySQL connects to MariaDB without modification. The practical implication is that MariaDB can be substituted into existing infrastructure without rewriting application code — a significant advantage when migrating or consolidating database services. Understanding why two tools are interchangeable, rather than just knowing they are, matters when making deployment decisions in environments where compatibility is required.
+The choice of MariaDB over MySQL is worth reflecting on. MariaDB maintains full compatibility with MySQL's SQL syntax and client libraries, meaning any application built for MySQL connects to MariaDB without modification. The practical implication is that MariaDB can be substituted into existing infrastructure without rewriting application code, a significant advantage when migrating or consolidating database services. Understanding why two tools are interchangeable, rather than just knowing they are, matters when making deployment decisions in environments where compatibility is required.
 
 Across all four days, the consistent thread was that no component works in isolation. SSH access depends on the correct permissions for the SSH key. Apache serving content depends on the correct NSG rule. Certbot issuing a certificate depends on DNS resolving and port 80 being open. Cron running a backup depends on absolute paths in the script. MariaDB's data protection depends on post-installation hardening. Each layer builds on the one before it, and a gap at any level undermines everything above it.
 
